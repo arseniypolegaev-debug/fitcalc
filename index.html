@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>FitCalc | Здоровье и спорт</title>
+<meta name="description" content="Бесплатные фитнес-калькуляторы и полезные статьи о здоровье, питании и тренировках. Рассчитайте калории, БЖУ, норму воды и идеальный вес.">
 <style>
   /* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМ --- */
   :root {
@@ -33,13 +34,18 @@
   @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
   /* --- НАВИГАЦИЯ --- */
-  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; }
+  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
   .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; cursor: pointer; letter-spacing: -0.5px; }
   .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
   .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; }
   .nav-links a:hover, .nav-links a.active { background: var(--btn-bg); color: #fff; }
   .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
   .theme-toggle:hover { background: var(--input-border); }
+
+  /* --- ПОИСК --- */
+  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; }
+  .search-input { width: 100%; max-width: 600px; padding: 10px 15px; border: 1px solid var(--input-border); border-radius: 20px; font-size: 15px; background: var(--input-bg); color: var(--text-color); transition: all 0.3s ease; }
+  .search-input:focus { outline: none; border-color: var(--btn-bg); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
 
   /* --- КОНТЕЙНЕР --- */
   .container { max-width: 800px; margin: 20px auto; padding: 0 20px; position: relative; z-index: 1; }
@@ -94,11 +100,15 @@
   .result { margin-top: 24px; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; display: none; animation: fadeIn 0.5s ease-in-out; color: #1e293b; }
   .result.water-result { background: #eff6ff; border-color: #bfdbfe; }
   .result.macro-result { background: #fdf4ff; border-color: #fbcfe8; }
+  .result.fat-result { background: #fffbeb; border-color: #fde68a; }
+  .result.ideal-result { background: #f0fdfa; border-color: #99f6e4; }
   .result p { margin: 8px 0; font-size: 16px; }
   .value { font-weight: 800; color: #16a34a; }
   .bmi-value { font-weight: 800; color: #2563eb; }
   .water-value { font-weight: 800; color: #0284c7; }
   .macro-value { font-weight: 800; color: #db2777; }
+  .fat-value { font-weight: 800; color: #d97706; }
+  .ideal-value { font-weight: 800; color: #0d9488; }
 
   /* --- FAQ --- */
   .faq-item { border-bottom: 1px solid var(--card-border); }
@@ -117,6 +127,16 @@
   .page-content p { margin-bottom: 15px; color: var(--text-muted); }
   .page-content ul { color: var(--text-muted); margin-bottom: 15px; padding-left: 20px; }
   
+  /* --- КНОПКА НАВЕРХ --- */
+  #scrollTopBtn {
+    display: none; position: fixed; bottom: 30px; right: 30px;
+    z-index: 99; border: none; outline: none;
+    background-color: var(--btn-bg); color: white; cursor: pointer;
+    padding: 15px; border-radius: 50%; font-size: 18px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: background 0.3s;
+  }
+  #scrollTopBtn:hover { background-color: var(--btn-hover); }
+
   /* --- ПОДВАЛ --- */
   footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; font-weight: 500; }
 
@@ -144,6 +164,11 @@
   <button class="theme-toggle" onclick="toggleTheme()">🌓 Тема</button>
 </nav>
 
+<!-- ПОИСК -->
+<div class="search-container">
+  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по статьям и калькуляторам..." oninput="filterContent()">
+</div>
+
 <div class="container">
   
   <!-- СТРАНИЦА 1: КАЛЬКУЛЯТОРЫ -->
@@ -153,7 +178,7 @@
       <p>Точные расчеты для здоровья, спорта и правильного питания. Бесплатно и без регистрации.</p>
     </div>
 
-    <div class="card">
+    <div class="card searchable-item" data-title="калькулятор калорий имт">
       <h2>🔥 Калькулятор калорий и ИМТ</h2>
       <label>Пол</label>
       <select id="sex"><option value="male">Мужчина</option><option value="female">Женщина</option></select>
@@ -179,7 +204,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card searchable-item" data-title="калькулятор воды">
       <h2>💧 Калькулятор нормы воды</h2>
       <label>Ваш вес (кг)</label><input type="number" id="water-weight" placeholder="Например, 70">
       <label>Физическая активность в день</label>
@@ -194,7 +219,7 @@
       </div>
     </div>
 
-    <div class="card">
+    <div class="card searchable-item" data-title="калькулятор бжу белки жиры углеводы">
       <h2>🥩 Калькулятор БЖУ</h2>
       <label>Ваш вес (кг)</label><input type="number" id="macro-weight" placeholder="Например, 70">
       <label>Ваша цель</label>
@@ -211,6 +236,32 @@
       </div>
     </div>
 
+    <div class="card searchable-item" data-title="калькулятор идеального веса">
+      <h2>⚖️ Калькулятор идеального веса</h2>
+      <label>Ваш рост (см)</label><input type="number" id="ideal-height" placeholder="Например, 175">
+      <div class="action-buttons"><button class="btn-primary" onclick="calculateIdealWeight()">Рассчитать</button></div>
+      <div class="result ideal-result" id="result-ideal">
+        <p>Ваш идеальный вес: <br><span class="ideal-value" id="ideal-weight-val"></span> кг</p>
+        <p style="font-size: 13px; color: #64748b; margin-top: 10px;">Рассчитано по формуле Брока.</p>
+      </div>
+    </div>
+
+    <div class="card searchable-item" data-title="калькулятор процента жира">
+      <h2>🧍 Калькулятор процента жира</h2>
+      <label>Пол</label>
+      <select id="fat-sex"><option value="male">Мужчина</option><option value="female">Женщина</option></select>
+      <label>Рост (см)</label><input type="number" id="fat-height" placeholder="Например, 175">
+      <label>Обхват шеи (см)</label><input type="number" id="fat-neck" placeholder="Например, 38">
+      <label>Обхват талии (см)</label><input type="number" id="fat-waist" placeholder="Например, 85">
+      <div id="hip-container" style="display:none;">
+        <label>Обхват бедер (см) (только для женщин)</label><input type="number" id="fat-hip" placeholder="Например, 95">
+      </div>
+      <div class="action-buttons"><button class="btn-primary" onclick="calculateFat()">Рассчитать</button></div>
+      <div class="result fat-result" id="result-fat">
+        <p>Процент жира в теле: <br><span class="fat-value" id="fat-val"></span>%</p>
+      </div>
+    </div>
+
     <div class="card">
       <h2>❓ Частые вопросы</h2>
       <div class="faq-item">
@@ -221,10 +272,6 @@
         <button class="faq-question" onclick="toggleFaq(this)">Как рассчитывается норма калорий?</button>
         <div class="faq-answer"><p>Мы используем формулу Миффлина-Сан Жеора. Сначала вычисляется базовый метаболизм (энергия для работы тела в покое), а затем он умножается на коэффициент вашей физической активности.</p></div>
       </div>
-      <div class="faq-item">
-        <button class="faq-question" onclick="toggleFaq(this)">Почему важно пить воду?</button>
-        <div class="faq-answer"><p>Вода участвует во всех обменных процессах. Недостаток воды приводит к снижению работоспособности, головным болям и проблемам с кожей. Наш калькулятор помогает рассчитать индивидуальную норму, учитывая ваш вес и нагрузки.</p></div>
-      </div>
     </div>
   </div>
 
@@ -232,43 +279,60 @@
   <div id="page-articles" class="page-content">
     <div class="card">
       <h2>📚 Полезные статьи</h2>
-      
-      <div class="article-card" onclick="showPage('article-1')">
-        <h3>Сколько калорий нужно в день, чтобы похудеть?</h3>
-        <p>Узнайте, как правильно рассчитать дефицит калорий для безопасного снижения веса, и почему жесткие диеты не работают.</p>
-      </div>
-      <div class="article-card" onclick="showPage('article-2')">
-        <h3>Почему вы не худеете? 5 скрытых причин</h3>
-        <p>Едите меньше, а вес стоит на месте? Разбираем самые частые ошибки, которые мешают вам достичь цели.</p>
-      </div>
-      <div class="article-card" onclick="showPage('article-3')">
-        <h3>Сколько воды нужно пить в день и как не заставлять себя</h3>
-        <p>Вода — основа жизни. Узнайте свою норму и простые лайфхаки, чтобы не забывать пить воду в течение дня.</p>
-      </div>
-      <div class="article-card" onclick="showPage('article-4')">
-        <h3>Как набрать мышечную массу новичку: пошаговый план</h3>
-        <p>Хотите стать больше и сильнее? Разбираем питание, тренировки и восстановление для роста мышц.</p>
-      </div>
-      <div class="article-card" onclick="showPage('article-5')">
-        <h3>Сколько сахара можно есть в день без вреда для здоровья</h3>
-        <p>ВОЗ бьет тревогу: мы едим слишком много сахара. Узнайте безопасную норму и где скрывается сахар.</p>
-      </div>
-      <div class="article-card" onclick="showPage('article-6')">
-        <h3>Почему болит все тело после тренировки и что делать</h3>
-        <p>Крепатура — это нормально или опасно? Как ускорить восстановление и когда стоит бить тревогу.</p>
-      </div>
-      <div class="article-card" onclick="showPage('article-7')">
-        <h3>Как начать бегать с нуля: план для новичков</h3>
-        <p>Бег — это не просто, но очень полезно. Пошаговая инструкция, как войти в ритм и не бросить.</p>
-      </div>
-      <div class="article-card" onclick="showPage('article-8')">
-        <h3>Вреден ли кофе и сколько его можно пить</h3>
-        <p>Кофе: друг или враг? Разбираем влияние кофеина на организм и безопасные дозировки.</p>
+      <div id="articles-list">
+        <div class="article-card searchable-item" data-title="сколько калорий нужно в день чтобы похудеть" onclick="showPage('article-1')">
+          <h3>Сколько калорий нужно в день, чтобы похудеть?</h3>
+          <p>Узнайте, как правильно рассчитать дефицит калорий для безопасного снижения веса, и почему жесткие диеты не работают.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="почему вы не худеете 5 скрытых причин" onclick="showPage('article-2')">
+          <h3>Почему вы не худеете? 5 скрытых причин</h3>
+          <p>Едите меньше, а вес стоит на месте? Разбираем самые частые ошибки, которые мешают вам достичь цели.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="сколько воды нужно пить в день" onclick="showPage('article-3')">
+          <h3>Сколько воды нужно пить в день и как не заставлять себя</h3>
+          <p>Вода — основа жизни. Узнайте свою норму и простые лайфхаки, чтобы не забывать пить воду в течение дня.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="как набрать мышечную массу новичку" onclick="showPage('article-4')">
+          <h3>Как набрать мышечную массу новичку: пошаговый план</h3>
+          <p>Хотите стать больше и сильнее? Разбираем питание, тренировки и восстановление для роста мышц.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="сколько сахара можно есть в день" onclick="showPage('article-5')">
+          <h3>Сколько сахара можно есть в день без вреда для здоровья</h3>
+          <p>ВОЗ бьет тревогу: мы едим слишком много сахара. Узнайте безопасную норму и где скрывается сахар.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="почему болит все тело после тренировки" onclick="showPage('article-6')">
+          <h3>Почему болит все тело после тренировки и что делать</h3>
+          <p>Крепатура — это нормально или опасно? Как ускорить восстановление и когда стоит бить тревогу.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="как начать бегать с нуля план для новичков" onclick="showPage('article-7')">
+          <h3>Как начать бегать с нуля: план для новичков</h3>
+          <p>Бег — это не просто, но очень полезно. Пошаговая инструкция, как войти в ритм и не бросить.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="вреден ли кофе и сколько его можно пить" onclick="showPage('article-8')">
+          <h3>Вреден ли кофе и сколько его можно пить</h3>
+          <p>Кофе: друг или враг? Разбираем влияние кофеина на организм и безопасные дозировки.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="топ 10 продуктов для роста мышц" onclick="showPage('article-9')">
+          <h3>Топ-10 продуктов для роста мышц</h3>
+          <p>Что нужно есть, чтобы мышцы росли? Список лучших источников белка и полезных жиров.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="как убрать живот упражнения и питание" onclick="showPage('article-10')">
+          <h3>Как убрать живот: упражнения и питание</h3>
+          <p>Почему качать пресс бесполезно для похудения? Комплексный подход к плоскому животу.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="мифы о здоровом питании" onclick="showPage('article-11')">
+          <h3>Мифы о здоровом питании, в которые пора перестать верить</h3>
+          <p>Яйца вредны? Жиры убивают? Развенчиваем популярные заблуждения диетологии.</p>
+        </div>
+        <div class="article-card searchable-item" data-title="как считать калории инструкция для новичков" onclick="showPage('article-12')">
+          <h3>Как считать калории: подробная инструкция для новичков</h3>
+          <p>С чего начать подсчет калорий, как взвешивать еду и вести дневник питания.</p>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- СТАТЬЯ 1 -->
+  <!-- СТАТЬИ 1-8 (Старые, оставляем как есть) -->
   <div id="page-article-1" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
@@ -291,7 +355,6 @@
     </div>
   </div>
 
-  <!-- СТАТЬЯ 2 -->
   <div id="page-article-2" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
@@ -315,7 +378,6 @@
     </div>
   </div>
 
-  <!-- СТАТЬЯ 3 -->
   <div id="page-article-3" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
@@ -339,46 +401,42 @@
     </div>
   </div>
 
-  <!-- СТАТЬЯ 4 -->
   <div id="page-article-4" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
       <h2>Как набрать мышечную массу новичку: пошаговый план</h2>
       <p>Набор мышечной массы — это не просто поход в зал и поднятие тяжестей. Это комплексный процесс, включающий правильное питание, режим тренировок и восстановление.</p>
       <h3>1. Питание — это 70% успеха</h3>
-      <p>Чтобы расти, вам нужен профицит калорий (вы едите больше, чем тратите). Но это не значит, что можно есть всё подряд. Вам нужен качественный белок (мясо, рыба, яйца, творог) и сложные углеводы (крупы, овощи).</p>
+      <p>Чтобы расти, вам нужен профицит калорий (вы едите больше, чем тратите). Вам нужен качественный белок (мясо, рыба, яйца, творог) и сложные углеводы (крупы, овощи).</p>
       <h3>2. Базовые упражнения</h3>
-      <p>Забудьте про изоляцию (сгибания на бицепс) на первых порах. Делайте базу: приседания, жим лежа, становая тяга, подтягивания. Они дают максимальный гормональный отклик для роста.</p>
+      <p>Забудьте про изоляцию на первых порах. Делайте базу: приседания, жим лежа, становая тяга, подтягивания.</p>
       <h3>3. Прогрессия нагрузок</h3>
-      <p>Мышцы растут только тогда, когда вы даете им нагрузку больше, чем в прошлый раз. Постепенно увеличивайте рабочий вес или количество повторений.</p>
+      <p>Мышцы растут только тогда, когда вы даете им нагрузку больше, чем в прошлый раз. Постепенно увеличивайте рабочий вес.</p>
       <h3>4. Восстановление и сон</h3>
-      <p>Мышцы растут не в зале, а во время отдыха. Спите не менее 8 часов и делайте 2-3 дня отдыха в неделю.</p>
+      <p>Мышцы растут не в зале, а во время отдыха. Спите не менее 8 часов.</p>
       <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать норму БЖУ для набора массы</button></p>
       <div class="read-more"><h3>Читайте также:</h3><ul>
         <li><a onclick="showPage('article-6')">Почему болит все тело после тренировки</a></li>
-        <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+        <li><a onclick="showPage('article-9')">Топ-10 продуктов для роста мышц</a></li>
       </ul></div>
     </div>
   </div>
 
-  <!-- СТАТЬЯ 5 -->
   <div id="page-article-5" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
       <h2>Сколько сахара можно есть в день без вреда для здоровья</h2>
-      <p>Всемирная организация здравоохранения (ВОЗ) настоятельно рекомендует сократить потребление добавленного сахара до 10% от общего суточного калоража, а лучше — до 5%.</p>
+      <p>ВОЗ рекомендует сократить потребление добавленного сахара до 10% от общего суточного калоража, а лучше — до 5%.</p>
       <h3>Что это значит в граммах?</h3>
       <p>Для взрослого человека с нормой 2000 ккал: 5% — это примерно <strong>25 граммов (6 чайных ложек)</strong> добавленного сахара в день. 10% — это 50 граммов.</p>
       <h3>Где скрывается сахар?</h3>
-      <p>Вы можете не есть конфеты и торты, но все равно перебирать норму. Сахар есть в:</p>
+      <p>Вы можете не есть конфеты, но перебирать норму. Сахар есть в:</p>
       <ul>
         <li>Соусах (кетчуп, барбекю).</li>
-        <li>Обезжиренных йогуртах (его добавляют для вкуса).</li>
+        <li>Обезжиренных йогуртах.</li>
         <li>Хлопьях и мюсли на завтрак.</li>
         <li>Соках и смузи.</li>
       </ul>
-      <h3>Чем заменить?</h3>
-      <p>Замените сладкие перекусы на фрукты, орехи или ягоды. Пейте воду или чай без сахара.</p>
       <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму калорий</button></p>
       <div class="read-more"><h3>Читайте также:</h3><ul>
         <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
@@ -387,22 +445,19 @@
     </div>
   </div>
 
-  <!-- СТАТЬЯ 6 -->
   <div id="page-article-6" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
       <h2>Почему болит все тело после тренировки и что делать</h2>
-      <p>Каждый новичок сталкивается с этим: после первой серьезной тренировки на следующий день невозможно встать с кровати. Это состояние называется <strong>крепатура</strong> (или отсроченная мышечная боль).</p>
+      <p>Каждый новичок сталкивается с этим: после первой серьезной тренировки на следующий день невозможно встать с кровати. Это состояние называется <strong>крепатура</strong>.</p>
       <h3>Это нормально?</h3>
-      <p>Да, это нормально. Микротравмы мышечных волокон — это часть процесса их роста и адаптации. Боль обычно достигает пика через 24–48 часов после тренировки.</p>
+      <p>Да, это нормально. Микротравмы мышечных волокон — это часть процесса их роста. Боль обычно достигает пика через 24–48 часов.</p>
       <h3>Что делать, чтобы облегчить боль?</h3>
       <ul>
-        <li><strong>Активное восстановление:</strong> легкая прогулка или растяжка улучшают кровоток.</li>
-        <li><strong>Тепло:</strong> теплая ванна или душ помогают расслабить мышцы.</li>
-        <li><strong>Вода и белок:</strong> пейте больше воды и ешьте достаточно белка для восстановления.</li>
+        <li><strong>Активное восстановление:</strong> легкая прогулка или растяжка.</li>
+        <li><strong>Тепло:</strong> теплая ванна или душ.</li>
+        <li><strong>Вода и белок:</strong> пейте больше воды и ешьте белок.</li>
       </ul>
-      <h3>Когда бить тревогу?</h3>
-      <p>Если боль острая, резкая, или если моча стала темного цвета — немедленно обратитесь к врачу. Это может быть признаком рабдомиолиза.</p>
       <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('article-4')">Как набрать мышечную массу новичку</button></p>
       <div class="read-more"><h3>Читайте также:</h3><ul>
         <li><a onclick="showPage('article-7')">Как начать бегать с нуля: план для новичков</a></li>
@@ -411,7 +466,6 @@
     </div>
   </div>
 
-  <!-- СТАТЬЯ 7 -->
   <div id="page-article-7" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
@@ -421,7 +475,7 @@
       <ul>
         <li><strong>Не начинайте с быстрого темпа.</strong> Бегите медленно, чтобы вы могли дышать носом и говорить.</li>
         <li><strong>Интервальный бег.</strong> Чередуйте бег с ходьбой (например, 2 минуты бега, 1 минута ходьбы).</li>
-        <li><strong>Правильная обувь.</strong> Кроссовки для бега — это не роскошь, а необходимость для здоровья коленей.</li>
+        <li><strong>Правильная обувь.</strong> Кроссовки для бега — это необходимость для здоровья коленей.</li>
       </ul>
       <h3>План на первую неделю:</h3>
       <table>
@@ -430,7 +484,6 @@
         <tr><td>Ср</td><td>3 мин бег / 2 мин ходьба (4 повтора)</td></tr>
         <tr><td>Сб</td><td>4 мин бег / 2 мин ходьба (3 повтора)</td></tr>
       </table>
-      <p>Главное — регулярность, а не скорость. Не гонитесь за рекордами!</p>
       <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать норму воды для бега</button></p>
       <div class="read-more"><h3>Читайте также:</h3><ul>
         <li><a onclick="showPage('article-6')">Почему болит все тело после тренировки</a></li>
@@ -439,24 +492,17 @@
     </div>
   </div>
 
-  <!-- СТАТЬЯ 8 -->
   <div id="page-article-8" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
       <h2>Вреден ли кофе и сколько его можно пить</h2>
       <p>Кофе — один из самых спорных напитков. Одни говорят, что он продлевает жизнь, другие — что разрушает сердце.</p>
       <h3>Плюсы кофе</h3>
-      <p>Кофе содержит антиоксиданты, которые помогают бороться со свободными радикалами. Умеренное потребление кофеина повышает работоспособность и улучшает концентрацию.</p>
+      <p>Кофе содержит антиоксиданты. Умеренное потребление кофеина повышает работоспособность и улучшает концентрацию.</p>
       <h3>Минусы и ограничения</h3>
-      <p>Избыток кофеина (более 400 мг в день, это примерно 4 чашки) может вызывать:</p>
-      <ul>
-        <li>Бессонницу.</li>
-        <li>Повышение тревожности.</li>
-        <li>Повышенное давление.</li>
-        <li>Проблемы с ЖКТ.</li>
-      </ul>
+      <p>Избыток кофеина (более 400 мг в день, это примерно 4 чашки) может вызывать бессонницу, тревожность, повышенное давление.</p>
       <h3>Как пить кофе правильно?</h3>
-      <p>Не пейте кофе на голодный желудок (стимулирует выработку кислоты). Не добавляйте в него много сахара и сиропов (это сводит на нет всю пользу). Лучше всего пить черный кофе или с небольшим количеством молока.</p>
+      <p>Не пейте кофе на голодный желудок. Не добавляйте много сахара и сиропов. Лучше всего пить черный кофе или с небольшим количеством молока.</p>
       <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму воды</button></p>
       <div class="read-more"><h3>Читайте также:</h3><ul>
         <li><a onclick="showPage('article-5')">Сколько сахара можно есть в день</a></li>
@@ -465,7 +511,93 @@
     </div>
   </div>
 
-  <!-- СТРАНИЦА 6: О САЙТЕ -->
+  <!-- СТАТЬЯ 9 -->
+  <div id="page-article-9" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Топ-10 продуктов для роста мышц</h2>
+      <p>Для роста мышц нужен строительный материал — белок. Вот 10 лучших продуктов, которые должны быть в рационе каждого атлета:</p>
+      <ul>
+        <li><strong>Куриная грудка:</strong> эталонный источник белка с минимальным содержанием жира.</li>
+        <li><strong>Яйца:</strong> идеальный белок, усваивается почти на 100%.</li>
+        <li><strong>Лосось:</strong> белок + полезные жиры Омега-3 для суставов.</li>
+        <li><strong>Творог:</strong> содержит казеин — медленный белок, идеален на ночь.</li>
+        <li><strong>Говядина:</strong> содержит креатин и железо.</li>
+        <li><strong>Греческий йогурт:</strong> много белка и пробиотики для ЖКТ.</li>
+        <li><strong>Овсянка:</strong> сложные углеводы для энергии на тренировке.</li>
+        <li><strong>Тунец:</strong> дешевый и доступный источник белка.</li>
+        <li><strong>Индейка:</strong> диетическое мясо.</li>
+        <li><strong>Бобовые (чечевица, фасоль):</strong> растительный белок и клетчатка.</li>
+      </ul>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать норму БЖУ для набора массы</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-4')">Как набрать мышечную массу новичку</a></li>
+        <li><a onclick="showPage('article-12')">Как считать калории: инструкция</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТАТЬЯ 10 -->
+  <div id="page-article-10" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как убрать живот: упражнения и питание</h2>
+      <p>Многие думают, что для плоского живота нужно качать пресс. Это миф! Локальное жиросжигание невозможно. Чтобы убрать живот, нужен комплексный подход.</p>
+      <h3>1. Питание решает всё</h3>
+      <p>Жир на животе уходит только при дефиците калорий. Никакие скручивания не сожгут жир, если вы переедаете. Уберите быстрые углеводы (сладости, выпечка) и ешьте больше белка.</p>
+      <h3>2. Кардио и активность</h3>
+      <p>Больше ходите пешком, добавьте интервальные тренировки или бег. Сжигание жира происходит во всем теле, включая живот.</p>
+      <h3>3. Упражнения для тонуса</h3>
+      <p>Качать пресс, конечно, нужно, но не для сжигания жира, а для укрепления мышц кора. Делайте планку, скручивания, подъемы ног.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать норму калорий для похудения</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+        <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТАТЬЯ 11 -->
+  <div id="page-article-11" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Мифы о здоровом питании, в которые пора перестать верить</h2>
+      <p>Интернет полон советов по питанию, но многие из них — опасные мифы. Разберем самые популярные.</p>
+      <h3>Миф 1: Яйца вредны для сердца</h3>
+      <p>Современные исследования доказали, что холестерин в яйцах не влияет на уровень холестерина в крови у большинства людей. Яйца — отличный источник белка.</p>
+      <h3>Миф 2: Чтобы похудеть, нужно не есть после 18:00</h3>
+      <p>Время приема пищи не так важно, как общее количество калорий за день. Важнее то, сколько вы съели, а не когда.</p>
+      <h3>Миф 3: Обезжиренные продукты полезны</h3>
+      <p>Чтобы убрать жир, производители добавляют сахар и ароматизаторы. Часто обезжиренный йогурт содержит больше сахара, чем обычный.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму калорий</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-5')">Сколько сахара можно есть в день</a></li>
+        <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТАТЬЯ 12 -->
+  <div id="page-article-12" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как считать калории: подробная инструкция для новичков</h2>
+      <p>Подсчет калорий — это самый надежный способ контролировать вес. На первый взгляд кажется сложным, но это навык, который вырабатывается за неделю.</p>
+      <h3>Шаг 1: Узнайте свою норму</h3>
+      <p>Используйте наш калькулятор калорий. Вы получите цифру для поддержания веса. Для похудения отнимите 15-20%.</p>
+      <h3>Шаг 2: Купите кухонные весы</h3>
+      <p>Глазомер — плохой помощник. Взвешивайте еду в сыром виде, так точнее всего.</p>
+      <h3>Шаг 3: Ведите дневник</h3>
+      <p>Скачайте приложение (например, FatSecret или MyFitnessPal) и вносите туда все, что вы съели за день.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Перейти к калькулятору калорий</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+        <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТРАНИЦА: О САЙТЕ -->
   <div id="page-about" class="page-content">
     <div class="card">
       <h2>О сайте FitCalc</h2>
@@ -476,7 +608,7 @@
     </div>
   </div>
 
-  <!-- СТРАНИЦА 7: ПОЛИТИКА -->
+  <!-- СТРАНИЦА: ПОЛИТИКА -->
   <div id="page-privacy" class="page-content">
     <div class="card">
       <h2>Политика конфиденциальности</h2>
@@ -497,6 +629,9 @@
 
 </div>
 
+<!-- КНОПКА НАВЕРХ -->
+<button onclick="scrollToTop()" id="scrollTopBtn" title="Наверх">↑</button>
+
 <script>
 // --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ СТРАНИЦ ---
 function showPage(pageId) {
@@ -505,7 +640,6 @@ function showPage(pageId) {
   
   document.getElementById('page-' + pageId).classList.add('active-page');
   
-  // Подсветка меню
   if(pageId.startsWith('article-')) {
     document.getElementById('link-articles').classList.add('active');
   } else if(document.getElementById('link-' + pageId)) {
@@ -514,6 +648,31 @@ function showPage(pageId) {
   
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
+
+// --- ЛОГИКА ПОИСКА ---
+function filterContent() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const items = document.querySelectorAll('.searchable-item');
+  
+  items.forEach(item => {
+    const title = item.getAttribute('data-title') || '';
+    if (title.includes(query)) {
+      item.style.display = 'block';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// --- ПОКАЗ ПРОЦЕНТА ЖИРА (Поля для женщин) ---
+document.getElementById('fat-sex').addEventListener('change', function() {
+  const hipContainer = document.getElementById('hip-container');
+  if (this.value === 'female') {
+    hipContainer.style.display = 'block';
+  } else {
+    hipContainer.style.display = 'none';
+  }
+});
 
 // --- КАЛЬКУЛЯТОРЫ ---
 function calculateCalories() {
@@ -569,6 +728,46 @@ function calculateMacros() {
   document.getElementById('result-macros').style.display = 'block';
 }
 
+function calculateIdealWeight() {
+  const height = parseFloat(document.getElementById('ideal-height').value);
+  if (!height || height <= 0) { alert('Введите корректный рост.'); return; }
+  
+  // Формула Брока
+  let ideal = height - 100;
+  if (height > 165) ideal = height - 105;
+  if (height > 175) ideal = height - 110;
+  
+  document.getElementById('ideal-weight-val').textContent = Math.round(ideal);
+  document.getElementById('result-ideal').style.display = 'block';
+}
+
+function calculateFat() {
+  const sex = document.getElementById('fat-sex').value;
+  const height = parseFloat(document.getElementById('fat-height').value);
+  const neck = parseFloat(document.getElementById('fat-neck').value);
+  const waist = parseFloat(document.getElementById('fat-waist').value);
+  const hip = parseFloat(document.getElementById('fat-hip').value);
+
+  if (!height || !neck || !waist || (sex === 'female' && !hip)) {
+    alert('Пожалуйста, заполните все необходимые поля.');
+    return;
+  }
+
+  let fat;
+  if (sex === 'male') {
+    // Формула ВМС США для мужчин
+    fat = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450;
+  } else {
+    // Формула ВМС США для женщин
+    fat = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450;
+  }
+
+  if (fat < 0) fat = 0; // Защита от дурака
+
+  document.getElementById('fat-val').textContent = fat.toFixed(1);
+  document.getElementById('result-fat').style.display = 'block';
+}
+
 function resetForm() {
   document.getElementById('age').value = '';
   document.getElementById('weight').value = '';
@@ -586,7 +785,21 @@ function toggleFaq(button) {
 function toggleTheme() {
   document.body.classList.toggle('dark-theme');
 }
+
+// --- КНОПКА НАВЕРХ ---
+window.onscroll = function() {
+  const btn = document.getElementById("scrollTopBtn");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    btn.style.display = "block";
+  } else {
+    btn.style.display = "none";
+  }
+};
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
 </script>
 
 </body>
-</html> 
+</html>
