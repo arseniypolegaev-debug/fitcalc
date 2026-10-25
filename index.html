@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitCalc | Здоровье и спорт</title>
+<style>
+  /* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМ --- */
+  :root {
+    --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0;
+    --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc;
+    --text-color: #1e293b; --text-muted: #475569;
+    --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8);
+    --input-bg: #ffffff; --input-border: #cbd5e1;
+    --btn-bg: #2563eb; --btn-hover: #1d4ed8; --btn-text: #ffffff;
+    --nav-bg: rgba(255, 255, 255, 0.95);
+    --hero-bg: linear-gradient(135deg, #2563eb, #3b82f6);
+  }
+
+  body.dark-theme {
+    --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b;
+    --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827;
+    --text-color: #f8fafc; --text-muted: #94a3b8;
+    --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1);
+    --input-bg: #0f172a; --input-border: #334155;
+    --btn-bg: #3b82f6; --btn-hover: #2563eb;
+    --nav-bg: rgba(15, 23, 42, 0.95);
+    --hero-bg: linear-gradient(135deg, #1e3a8a, #1e40af);
+  }
+
+  /* --- БАЗОВЫЕ СТИЛИ --- */
+  body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    margin: 0; padding: 0 0 20px 0; 
+    color: var(--text-color); line-height: 1.6;
+    transition: color 0.4s ease;
+    background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4));
+    background-size: 400% 400%;
+    animation: gradientBG 25s ease infinite;
+    min-height: 100vh;
+  }
+
+  @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  /* --- НАВИГАЦИЯ --- */
+  .navbar {
+    background: var(--nav-bg); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--card-border);
+    position: sticky; top: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 12px 20px;
+  }
+
+  .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; cursor: pointer; letter-spacing: -0.5px; }
+  
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  
+  .nav-links a {
+    text-decoration: none; color: var(--text-color);
+    font-weight: 600; font-size: 15px;
+    padding: 8px 14px; border-radius: 8px;
+    transition: all 0.3s ease; cursor: pointer;
+  }
+  
+  .nav-links a:hover, .nav-links a.active {
+    background: var(--btn-bg); color: #fff;
+  }
+
+  .theme-toggle {
+    background: transparent; border: 1px solid var(--input-border);
+    color: var(--text-color); padding: 8px 14px; border-radius: 20px;
+    cursor: pointer; font-size: 14px; transition: all 0.3s;
+  }
+  .theme-toggle:hover { background: var(--input-border); }
+
+  /* --- КОНТЕЙНЕР --- */
+  .container { max-width: 800px; margin: 20px auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* --- HERO-СЕКЦИЯ --- */
+  .hero {
+    background: var(--hero-bg); color: #ffffff;
+    border-radius: 20px; padding: 50px 30px; text-align: center;
+    margin-bottom: 30px; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
+    animation: fadeIn 0.8s ease-in-out;
+  }
+  .hero h1 { font-size: 32px; margin-top: 0; margin-bottom: 15px; color: #fff; }
+  .hero p { font-size: 18px; opacity: 0.9; margin: 0; }
+
+  /* --- КАРТОЧКИ --- */
+  .card { 
+    background: var(--card-bg); backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border); border-radius: 16px; 
+    padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); 
+    margin-bottom: 24px; transition: all 0.4s ease;
+  }
+  
+  h2 { font-size: 22px; margin-top: 0; text-align: left; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  h3 { font-size: 18px; color: var(--text-color); margin-top: 20px; margin-bottom: 10px; }
+
+  /* --- СТИЛИ ДЛЯ СТАТЕЙ --- */
+  .article-card { cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; padding: 15px; border: 1px solid var(--card-border); border-radius: 12px; }
+  .article-card:hover { transform: translateY(-2px); border-color: var(--btn-bg); background: var(--input-bg); }
+  .article-card h3 { margin-top: 0; color: var(--btn-bg); border-bottom: none; margin-bottom: 5px; }
+  .article-card p { color: var(--text-muted); font-size: 15px; margin: 0; }
+  
+  .article-content p { margin-bottom: 15px; color: var(--text-muted); font-size: 16px; }
+  .article-content ul { color: var(--text-muted); margin-bottom: 20px; padding-left: 20px; }
+  .article-content li { margin-bottom: 8px; }
+  .article-content table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+  .article-content th, .article-content td { border: 1px solid var(--card-border); padding: 10px; text-align: left; }
+  .article-content th { background: var(--input-bg); color: var(--text-color); }
+  
+  .btn-back {
+    display: inline-block; margin-bottom: 20px; padding: 8px 16px;
+    background: var(--input-bg); border: 1px solid var(--input-border);
+    border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none;
+  }
+  .btn-back:hover { background: var(--input-border); }
+
+  /* Блок "Читайте также" */
+  .read-more {
+    margin-top: 30px; padding-top: 20px; border-top: 2px dashed var(--card-border);
+  }
+  .read-more h3 { margin-top: 0; font-size: 18px; color: var(--text-color); }
+  .read-more ul { list-style: none; padding: 0; }
+  .read-more li { margin-bottom: 10px; }
+  .read-more a { color: var(--btn-bg); text-decoration: none; font-weight: 600; cursor: pointer; }
+  .read-more a:hover { text-decoration: underline; }
+
+  /* --- ФОРМЫ --- */
+  label { display: block; margin: 16px 0 6px; font-weight: 600; font-size: 14px; color: var(--text-muted); }
+  input, select { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 8px; font-size: 16px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--text-color); }
+  input:focus, select:focus { outline: none; border-color: var(--btn-bg); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+
+  .action-buttons { display: flex; gap: 10px; margin-top: 24px; }
+  button.btn-primary { flex: 2; padding: 14px; background: var(--btn-bg); color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s, transform 0.1s; }
+  button.btn-primary:hover { background: var(--btn-hover); }
+  button.btn-primary:active { transform: scale(0.98); }
+  button.btn-secondary { flex: 1; padding: 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--input-border); border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+  button.btn-secondary:hover { background: var(--input-border); color: var(--text-color); }
+
+  /* --- РЕЗУЛЬТАТЫ --- */
+  .result { margin-top: 24px; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; display: none; animation: fadeIn 0.5s ease-in-out; color: #1e293b; }
+  .result.water-result { background: #eff6ff; border-color: #bfdbfe; }
+  .result.macro-result { background: #fdf4ff; border-color: #fbcfe8; }
+  .result p { margin: 8px 0; font-size: 16px; }
+  .value { font-weight: 800; color: #16a34a; }
+  .bmi-value { font-weight: 800; color: #2563eb; }
+  .water-value { font-weight: 800; color: #0284c7; }
+  .macro-value { font-weight: 800; color: #db2777; }
+
+  /* --- FAQ --- */
+  .faq-item { border-bottom: 1px solid var(--card-border); }
+  .faq-item:last-child { border-bottom: none; }
+  .faq-question { width: 100%; text-align: left; background: none; border: none; padding: 16px 0; font-size: 16px; font-weight: 600; color: var(--text-color); cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: color 0.3s ease; }
+  .faq-question:hover { color: var(--btn-bg); }
+  .faq-question::after { content: '+'; font-size: 20px; color: var(--text-muted); transition: transform 0.4s ease, color 0.4s ease; }
+  .faq-question.active { color: var(--btn-bg); }
+  .faq-question.active::after { content: '−'; color: var(--btn-bg); transform: rotate(180deg); }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-in-out, padding 0.5s ease-in-out; color: var(--text-muted); font-size: 15px; }
+  .faq-answer.open { max-height: 400px; padding-bottom: 16px; }
+
+  /* --- СТРАНИЦЫ --- */
+  .page-content { display: none; animation: fadeIn 0.5s ease-in-out; }
+  .page-content.active-page { display: block; }
+  .page-content p { margin-bottom: 15px; color: var(--text-muted); }
+  .page-content ul { color: var(--text-muted); margin-bottom: 15px; padding-left: 20px; }
+  
+  /* --- ПОДВАЛ --- */
+  footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; font-weight: 500; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 600px) {
+    .navbar { flex-direction: column; gap: 12px; }
+    .nav-links { justify-content: center; }
+    .hero { padding: 30px 20px; }
+    .hero h1 { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="navbar">
+  <a class="nav-logo" onclick="showPage('calc')">FitCalc</a>
+  <div class="nav-links">
+    <a class="nav-link active" onclick="showPage('calc')" id="link-calc">Калькуляторы</a>
+    <a class="nav-link" onclick="showPage('articles')" id="link-articles">Статьи</a>
+    <a class="nav-link" onclick="showPage('about')" id="link-about">О сайте</a>
+    <a class="nav-link" onclick="showPage('privacy')" id="link-privacy">Политика</a>
+  </div>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓 Тема</button>
+</nav>
+
+<div class="container">
+  
+  <!-- СТРАНИЦА 1: КАЛЬКУЛЯТОРЫ -->
+  <div id="page-calc" class="page-content active-page">
+    <div class="hero">
+      <h1>Твой путь к идеальному телу начинается здесь</h1>
+      <p>Точные расчеты для здоровья, спорта и правильного питания. Бесплатно и без регистрации.</p>
+    </div>
+
+    <div class="card">
+      <h2>🔥 Калькулятор калорий и ИМТ</h2>
+      <label>Пол</label>
+      <select id="sex"><option value="male">Мужчина</option><option value="female">Женщина</option></select>
+      <label>Возраст (лет)</label><input type="number" id="age" placeholder="Например, 25">
+      <label>Вес (кг)</label><input type="number" id="weight" placeholder="Например, 70">
+      <label>Рост (см)</label><input type="number" id="height" placeholder="Например, 175">
+      <label>Уровень активности</label>
+      <select id="activity">
+        <option value="1.2">Сидячий образ жизни</option>
+        <option value="1.375">Легкая активность (1-3 тренировки)</option>
+        <option value="1.55">Средняя активность (3-5 тренировок)</option>
+        <option value="1.725">Высокая активность (6-7 тренировок)</option>
+        <option value="1.9">Очень высокая (спортсмены)</option>
+      </select>
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="calculateCalories()">Рассчитать</button>
+        <button class="btn-secondary" onclick="resetForm()">Сброс</button>
+      </div>
+      <div class="result" id="result-calories">
+        <p>Норма калорий: <br><span class="value" id="calories"></span> ккал/день</p>
+        <p>Ваш ИМТ: <span class="bmi-value" id="bmi"></span></p>
+        <p>Категория: <span class="bmi-value" id="bmiCategory"></span></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>💧 Калькулятор нормы воды</h2>
+      <label>Ваш вес (кг)</label><input type="number" id="water-weight" placeholder="Например, 70">
+      <label>Физическая активность в день</label>
+      <select id="water-activity">
+        <option value="0">Минимальная (сидячая работа)</option>
+        <option value="0.5">Умеренная (прогулки, легкий спорт)</option>
+        <option value="1">Высокая (интенсивные тренировки)</option>
+      </select>
+      <div class="action-buttons"><button class="btn-primary" onclick="calculateWater()">Рассчитать</button></div>
+      <div class="result water-result" id="result-water">
+        <p>Ваша норма воды: <br><span class="water-value" id="water-result-val"></span> литров в день</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>🥩 Калькулятор БЖУ</h2>
+      <label>Ваш вес (кг)</label><input type="number" id="macro-weight" placeholder="Например, 70">
+      <label>Ваша цель</label>
+      <select id="macro-goal">
+        <option value="loss">Похудение</option>
+        <option value="maintain" selected>Поддержание веса</option>
+        <option value="gain">Набор мышечной массы</option>
+      </select>
+      <div class="action-buttons"><button class="btn-primary" onclick="calculateMacros()">Рассчитать</button></div>
+      <div class="result macro-result" id="result-macros">
+        <p>Белки: <span class="macro-value" id="protein"></span> г/день</p>
+        <p>Жиры: <span class="macro-value" id="fat"></span> г/день</p>
+        <p>Углеводы: <span class="macro-value" id="carbs"></span> г/день</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>❓ Частые вопросы</h2>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Что такое ИМТ и зачем он нужен?</button>
+        <div class="faq-answer"><p>ИМТ (Индекс Массы Тела) — это показатель, который помогает оценить, соответствует ли ваш вес росту. Он рассчитывается по формуле: вес (кг) делить на рост в квадрате (м). Этот показатель используется врачами и диетологами для первичной оценки рисков для здоровья.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Как рассчитывается норма калорий?</button>
+        <div class="faq-answer"><p>Мы используем формулу Миффлина-Сан Жеора. Сначала вычисляется базовый метаболизм (энергия для работы тела в покое), а затем он умножается на коэффициент вашей физической активности.</p></div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-question" onclick="toggleFaq(this)">Почему важно пить воду?</button>
+        <div class="faq-answer"><p>Вода участвует во всех обменных процессах. Недостаток воды приводит к снижению работоспособности, головным болям и проблемам с кожей. Наш калькулятор помогает рассчитать индивидуальную норму, учитывая ваш вес и нагрузки.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- СТРАНИЦА 2: СПИСОК СТАТЕЙ -->
+  <div id="page-articles" class="page-content">
+    <div class="card">
+      <h2>📚 Полезные статьи</h2>
+      
+      <div class="article-card" onclick="showPage('article-1')">
+        <h3>Сколько калорий нужно в день, чтобы похудеть?</h3>
+        <p>Узнайте, как правильно рассчитать дефицит калорий для безопасного снижения веса, и почему жесткие диеты не работают.</p>
+      </div>
+
+      <div class="article-card" onclick="showPage('article-2')">
+        <h3>Почему вы не худеете? 5 скрытых причин</h3>
+        <p>Едите меньше, а вес стоит на месте? Разбираем самые частые ошибки, которые мешают вам достичь цели.</p>
+      </div>
+
+      <div class="article-card" onclick="showPage('article-3')">
+        <h3>Сколько воды нужно пить в день и как не заставлять себя</h3>
+        <p>Вода — основа жизни. Узнайте свою норму и простые лайфхаки, чтобы не забывать пить воду в течение дня.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- СТРАНИЦА 3: СТАТЬЯ 1 -->
+  <div id="page-article-1" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Сколько калорий нужно в день, чтобы похудеть?</h2>
+      <p>Похудение — это математика. Если вы потребляете меньше энергии, чем тратите, ваш организм начинает сжигать жировые запасы. Однако вопрос не в том, чтобы голодать, а в том, чтобы создать правильный дефицит.</p>
+      
+      <h3>Что такое дефицит калорий?</h3>
+      <p>Дефицит калорий — это разница между количеством калорий, которые вы получаете с пищей, и количеством, которое ваше тело расходует. Чтобы терять около 0.5 кг в неделю (безопасный темп), вам нужно создать дефицит примерно в 500 ккал в день.</p>
+      
+      <h3>Как рассчитать свою норму?</h3>
+      <p>Сначала вам нужно узнать свою норму для поддержания веса. Для этого используйте наш калькулятор калорий. Затем вычтите из этого числа 15–20%.</p>
+      <table>
+        <tr><th>Пол</th><th>Средняя норма (для поддержания)</th><th>Норма для похудения (-20%)</th></tr>
+        <tr><td>Мужчина (70 кг, сидячий)</td><td>~2000 ккал</td><td>~1600 ккал</td></tr>
+        <tr><td>Женщина (60 кг, сидячий)</td><td>~1600 ккал</td><td>~1280 ккал</td></tr>
+      </table>
+
+      <h3>Почему жесткие диеты — зло?</h3>
+      <p>Если вы урежете калории слишком сильно (например, до 1000 ккал), организм воспримет это как голод. Замедлится метаболизм, начнут разрушаться мышцы, а вес вскоре вернется с избытком.</p>
+      <ul>
+        <li><strong>Не опускайтесь ниже базового метаболизма.</strong></li>
+        <li><strong>Ешьте достаточно белка</strong>, чтобы сохранить мышцы.</li>
+        <li><strong>Пейте воду</strong> — иногда жажда маскируется под голод.</li>
+      </ul>
+      
+      <p style="margin-top: 30px; text-align: center;">
+        <button class="btn-primary" onclick="showPage('calc')">Перейти к калькулятору калорий</button>
+      </p>
+
+      <div class="read-more">
+        <h3>Читайте также:</h3>
+        <ul>
+          <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+          <li><a onclick="showPage('article-3')">Сколько воды нужно пить в день и как не заставлять себя</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- СТРАНИЦА 4: СТАТЬЯ 2 -->
+  <div id="page-article-2" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Почему вы не худеете? 5 скрытых причин</h2>
+      <p>Ситуация, когда вы прилагаете усилия, но вес не сдвигается с мертвой точки, может быть очень расстраивающей. Чаще всего проблема кроется в незаметных деталях.</p>
+      
+      <h3>1. Вы недооцениваете калории</h3>
+      <p>Исследования показывают, что люди склонны недооценивать количество съеденной пищи на 20–30%. Масло для жарки, соусы, перекусы «на бегу» — всё это содержит калории. Ведите дневник питания хотя бы неделю.</p>
+      
+      <h3>2. Хронический стресс и недосып</h3>
+      <p>Когда вы мало спите, организм вырабатывает больше гормона голода (грелина) и меньше гормона насыщения (лептина). Вы начинаете больше хотеть сладкого и жирного.</p>
+      
+      <h3>3. Мало белка в рационе</h3>
+      <p>Белок не только помогает сохранить мышцы при дефиците калорий, но и требует больше энергии на переваривание (термический эффект пищи).</p>
+
+      <h3>4. Скрытые калории в напитках</h3>
+      <p>Сладкий кофе, соки, газировка и даже «здоровые» смузи могут содержать до 300–500 ккал в день. Жидкие калории практически не насыщают.</p>
+
+      <h3>5. Вы мало двигаетесь вне тренировок</h3>
+      <p>Вы можете ходить в зал 3 раза в неделю, но если остальное время вы сидите (на работе, дома, в машине), ваш общий расход энергии будет низким. Старайтесь проходить 7000–10000 шагов в день.</p>
+      
+      <p style="margin-top: 30px; text-align: center;">
+        <button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму калорий</button>
+      </p>
+
+      <div class="read-more">
+        <h3>Читайте также:</h3>
+        <ul>
+          <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+          <li><a onclick="showPage('article-3')">Сколько воды нужно пить в день и как не заставлять себя</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- СТРАНИЦА 5: СТАТЬЯ 3 -->
+  <div id="page-article-3" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Сколько воды нужно пить в день и как не заставлять себя</h2>
+      <p>Вода — это самый важный элемент для нашего организма. Она участвует во всех обменных процессах, помогает пищеварению и даже способствует снижению веса (если пить воду перед едой).</p>
+      
+      <h3>Как рассчитать свою норму?</h3>
+      <p>Универсальная формула: <strong>30 мл воды на 1 кг веса</strong>. Если вы весите 70 кг, ваша норма — около 2.1 литра в день. При активных тренировках или в жаркую погоду норму нужно увеличивать.</p>
+      
+      <h3>Почему так сложно пить воду?</h3>
+      <p>Многие люди просто забывают пить, или им не нравится вкус воды. Вот несколько простых лайфхаков:</p>
+      <ul>
+        <li><strong>Бутылка на видном месте:</strong> поставьте бутылку воды на рабочий стол или носите её с собой.</li>
+        <li><strong>Приложения-напоминалки:</strong> существуют специальные приложения для телефона, которые вибрируют и напоминают сделать глоток.</li>
+        <li><strong>Добавьте вкус:</strong> бросьте в бутылку лимон, огурец или мяту — это сделает воду вкуснее без сахара.</li>
+        <li><strong>Пейте перед едой:</strong> стакан воды за 30 минут до еды поможет не только насытиться быстрее, но и улучшит пищеварение.</li>
+      </ul>
+      
+      <p style="margin-top: 30px; text-align: center;">
+        <button class="btn-primary" onclick="showPage('calc')">Рассчитать точную норму воды</button>
+      </p>
+
+      <div class="read-more">
+        <h3>Читайте также:</h3>
+        <ul>
+          <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+          <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- СТРАНИЦА 6: О САЙТЕ -->
+  <div id="page-about" class="page-content">
+    <div class="card">
+      <h2>О сайте FitCalc</h2>
+      <p>Добро пожаловать на <strong>FitCalc</strong> — ваш надежный помощник в мире здоровья, фитнеса и правильного питания!</p>
+      <p>Наша миссия — сделать сложные медицинские и спортивные расчеты простыми и доступными для каждого. Мы верим, что забота о своем теле должна начинаться с точных данных, а не с догадок.</p>
+      <p>Все наши инструменты используют проверенные научные формулы (например, формулу Миффлина-Сан Жеора), которые применяются профессиональными диетологами и тренерами по всему миру.</p>
+      <p>Если у вас есть вопросы или предложения, вы всегда можете связаться с нами по адресу: <strong>arseniy.polegaev@gmail.com</strong>.</p>
+    </div>
+  </div>
+
+  <!-- СТРАНИЦА 7: ПОЛИТИКА -->
+  <div id="page-privacy" class="page-content">
+    <div class="card">
+      <h2>Политика конфиденциальности</h2>
+      <p>Настоящая Политика конфиденциальности описывает, как сайт <strong>FitCalc</strong> собирает, использует и защищает информацию, которую вы предоставляете при использовании нашего сайта.</p>
+      <h3>1. Сбор информации</h3>
+      <p>Мы не собираем и не храним ваши личные данные (такие как имя или адрес), если вы сами не предоставите их нам. Все расчеты в калькуляторах выполняются локально в вашем браузере.</p>
+      <h3>2. Использование файлов Cookie и Google AdSense</h3>
+      <p>Наш сайт использует файлы cookie. Кроме того, мы планируем использовать сервис <strong>Google AdSense</strong> для показа рекламы. Третьи лица (включая Google) могут использовать файлы cookie для показа объявлений на основе предыдущих посещений вами нашего сайта или других сайтов в Интернете.</p>
+      <h3>3. Согласие</h3>
+      <p>Используя наш сайт, вы тем самым соглашаетесь с нашей Политикой конфиденциальности.</p>
+    </div>
+  </div>
+
+  <!-- ПОДВАЛ -->
+  <footer>
+    &copy; 2026 FitCalc. Все права защищены.
+  </footer>
+
+</div>
+
+<script>
+// --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ СТРАНИЦ ---
+function showPage(pageId) {
+  document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active-page'));
+  document.querySelectorAll('.nav-link').forEach(el => el.classList.remove('active'));
+  
+  document.getElementById('page-' + pageId).classList.add('active-page');
+  
+  // Подсветка меню
+  if(pageId === 'article-1' || pageId === 'article-2' || pageId === 'article-3') {
+    document.getElementById('link-articles').classList.add('active');
+  } else if(document.getElementById('link-' + pageId)) {
+    document.getElementById('link-' + pageId).classList.add('active');
+  }
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- КАЛЬКУЛЯТОРЫ ---
+function calculateCalories() {
+  const sex = document.getElementById('sex').value;
+  const age = parseFloat(document.getElementById('age').value);
+  const weight = parseFloat(document.getElementById('weight').value);
+  const height = parseFloat(document.getElementById('height').value);
+  const activity = parseFloat(document.getElementById('activity').value);
+
+  if (!age || !weight || !height || age <= 0 || weight <= 0 || height <= 0) {
+    alert('Пожалуйста, введите корректные положительные числа для возраста, веса и роста.');
+    return;
+  }
+
+  let bmr = (sex === 'male') ? (10 * weight + 6.25 * height - 5 * age + 5) : (10 * weight + 6.25 * height - 5 * age - 161);
+  const calories = Math.round(bmr * activity);
+  const bmi = weight / Math.pow(height / 100, 2);
+  
+  let category;
+  if (bmi < 18.5) category = 'Недостаточный вес';
+  else if (bmi < 25) category = 'Норма';
+  else if (bmi < 30) category = 'Избыточный вес';
+  else category = 'Ожирение';
+
+  document.getElementById('calories').textContent = calories;
+  document.getElementById('bmi').textContent = bmi.toFixed(1);
+  document.getElementById('bmiCategory').textContent = category;
+  document.getElementById('result-calories').style.display = 'block';
+}
+
+function calculateWater() {
+  const weight = parseFloat(document.getElementById('water-weight').value);
+  const activity = parseFloat(document.getElementById('water-activity').value);
+  if (!weight || weight <= 0) { alert('Введите корректный вес.'); return; }
+  let water = (weight * 0.03) + activity;
+  document.getElementById('water-result-val').textContent = water.toFixed(1);
+  document.getElementById('result-water').style.display = 'block';
+}
+
+function calculateMacros() {
+  const weight = parseFloat(document.getElementById('macro-weight').value);
+  const goal = document.getElementById('macro-goal').value;
+  if (!weight || weight <= 0) { alert('Введите корректный вес.'); return; }
+  
+  let protein, fat, carbs;
+  if (goal === 'loss') { protein = weight * 2.0; fat = weight * 0.8; carbs = weight * 2.0; }
+  else if (goal === 'gain') { protein = weight * 2.0; fat = weight * 1.0; carbs = weight * 4.0; }
+  else { protein = weight * 1.6; fat = weight * 1.0; carbs = weight * 3.0; }
+
+  document.getElementById('protein').textContent = Math.round(protein);
+  document.getElementById('fat').textContent = Math.round(fat);
+  document.getElementById('carbs').textContent = Math.round(carbs);
+  document.getElementById('result-macros').style.display = 'block';
+}
+
+function resetForm() {
+  document.getElementById('age').value = '';
+  document.getElementById('weight').value = '';
+  document.getElementById('height').value = '';
+  document.getElementById('sex').selectedIndex = 0;
+  document.getElementById('activity').selectedIndex = 0;
+  document.getElementById('result-calories').style.display = 'none';
+}
+
+function toggleFaq(button) {
+  button.classList.toggle('active');
+  button.nextElementSibling.classList.toggle('open');
+}
+
+function toggleTheme() {
+  document.body.classList.toggle('dark-theme');
+}
+</script>
+
+</body>
+</html>
