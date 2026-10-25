@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Мотивация | FitCalc</title>
+<style>
+  /* --- 4 ТЕМЫ --- */
+  :root { /* Светлая (по умолчанию) */
+    --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0; --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc;
+    --text-color: #1e293b; --text-muted: #475569; --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8);
+    --input-bg: #ffffff; --input-border: #cbd5e1; --btn-bg: #2563eb; --btn-hover: #1d4ed8; --nav-bg: rgba(255, 255, 255, 0.95);
+  }
+
+  body.theme-dark {
+    --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b; --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827;
+    --text-color: #f8fafc; --text-muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1);
+    --input-bg: #0f172a; --input-border: #334155; --btn-bg: #3b82f6; --btn-hover: #2563eb; --nav-bg: rgba(15, 23, 42, 0.95);
+  }
+
+  body.theme-light-blue {
+    --bg-gradient-1: #e0f2fe; --bg-gradient-2: #bae6fd; --bg-gradient-3: #7dd3fc; --bg-gradient-4: #f0f9ff;
+    --text-color: #0f172a; --text-muted: #334155; --card-bg: rgba(255, 255, 255, 0.85); --card-border: rgba(255, 255, 255, 0.6);
+    --input-bg: #ffffff; --input-border: #bae6fd; --btn-bg: #0284c7; --btn-hover: #0369a1; --nav-bg: rgba(224, 242, 254, 0.95);
+  }
+
+  body.theme-grey-blue {
+    --bg-gradient-1: #cbd5e1; --bg-gradient-2: #94a3b8; --bg-gradient-3: #64748b; --bg-gradient-4: #e2e8f0;
+    --text-color: #0f172a; --text-muted: #334155; --card-bg: rgba(255, 255, 255, 0.85); --card-border: rgba(255, 255, 255, 0.5);
+    --input-bg: #f1f5f9; --input-border: #94a3b8; --btn-bg: #475569; --btn-hover: #334155; --nav-bg: rgba(203, 213, 225, 0.95);
+  }
+
+  /* --- БАЗОВЫЕ СТИЛИ --- */
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0 0 20px 0; color: var(--text-color); line-height: 1.6; transition: color 0.4s ease; background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4)); background-size: 400% 400%; animation: gradientBG 25s ease infinite; min-height: 100vh; }
+  @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+  /* --- НАВИГАЦИЯ --- */
+  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+  .nav-left { display: flex; flex-direction: column; gap: 5px; }
+  .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; cursor: pointer; letter-spacing: -0.5px; }
+  .lang-switch { font-size: 12px; font-weight: bold; color: var(--text-muted); cursor: pointer; display: flex; gap: 5px; }
+  .lang-switch span:hover { color: var(--btn-bg); }
+  .lang-switch .active { color: var(--btn-bg); text-decoration: underline; }
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; }
+  .nav-links a:hover, .nav-links a.active { background: var(--btn-bg); color: #fff; }
+  .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 16px; transition: all 0.3s; }
+  .theme-toggle:hover { background: var(--input-border); }
+
+  /* --- ПОИСК --- */
+  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; transition: all 0.3s; }
+  .search-container.hidden { display: none; }
+  .search-input { width: 100%; max-width: 600px; padding: 10px 15px; border: 1px solid var(--input-border); border-radius: 20px; font-size: 15px; background: var(--input-bg); color: var(--text-color); transition: all 0.3s ease; }
+  .search-input:focus { outline: none; border-color: var(--btn-bg); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+
+  /* --- КОНТЕЙНЕР --- */
+  .container { max-width: 800px; margin: 20px auto; padding: 0 20px; position: relative; z-index: 1; }
+  .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); margin-bottom: 24px; transition: all 0.4s ease; }
+  h2 { font-size: 22px; margin-top: 0; text-align: left; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  h3 { font-size: 18px; color: var(--text-color); margin-top: 20px; margin-bottom: 10px; }
+
+  /* --- КАРТОЧКИ МОТИВАЦИЙ --- */
+  .motivation-card { cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; padding: 15px; border: 1px solid var(--card-border); border-radius: 12px; display: flex; gap: 15px; align-items: center; }
+  .motivation-card:hover { transform: translateY(-2px); border-color: var(--btn-bg); background: var(--input-bg); }
+  .motivation-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--btn-bg); }
+  .motivation-card-info h3 { margin: 0 0 5px 0; color: var(--btn-bg); font-size: 18px; }
+  .motivation-card-info p { margin: 0; color: var(--text-muted); font-size: 14px; }
+
+  /* --- СТРАНИЦА МОТИВАЦИИ --- */
+  .motivation-content img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; float: left; margin-right: 20px; margin-bottom: 10px; border: 3px solid var(--btn-bg); }
+  .motivation-content p { margin-bottom: 15px; color: var(--text-muted); font-size: 16px; }
+  .motivation-content blockquote { font-size: 20px; font-style: italic; font-weight: 600; color: var(--btn-bg); border-left: 4px solid var(--btn-bg); padding-left: 15px; margin: 20px 0; background: var(--input-bg); padding: 15px; border-radius: 8px; }
+  
+  .btn-back { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-back:hover { background: var(--input-border); }
+
+  .read-more { margin-top: 30px; padding-top: 20px; border-top: 2px dashed var(--card-border); clear: both; }
+  .read-more h3 { margin-top: 0; font-size: 18px; color: var(--text-color); }
+  .read-more ul { list-style: none; padding: 0; }
+  .read-more li { margin-bottom: 10px; }
+  .read-more a { color: var(--btn-bg); text-decoration: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .read-more a:hover { text-decoration: underline; padding-left: 5px; }
+
+  /* --- КНОПКА НАВЕРХ --- */
+  #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border: none; outline: none; background-color: var(--btn-bg); color: white; cursor: pointer; padding: 15px; border-radius: 50%; font-size: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: background 0.3s; }
+  #scrollTopBtn:hover { background-color: var(--btn-hover); }
+
+  footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; font-weight: 500; }
+  .page-content { display: none; animation: fadeIn 0.5s ease-in-out; }
+  .page-content.active-page { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+  @media (max-width: 600px) {
+    .navbar { flex-direction: column; gap: 12px; }
+    .nav-links { justify-content: center; }
+    .motivation-content img { float: none; display: block; margin: 0 auto 15px auto; }
+  }
+</style>
+</head>
+<body>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="navbar">
+  <div class="nav-left">
+    <a class="nav-logo" href="index.html">FitCalc</a>
+    <div class="lang-switch">
+      <span class="active" onclick="alert('Перевод в разработке')">RU</span> | 
+      <span onclick="alert('Перевод в разработке')">EN</span>
+    </div>
+  </div>
+  <div class="nav-links">
+    <a href="index.html">Калькуляторы</a>
+    <a href="articles.html">Статьи</a>
+    <a class="active">Мотивация</a>
+    <a href="index.html">О сайте</a>
+  </div>
+  <button class="theme-toggle" id="themeBtn" onclick="cycleTheme(this)">☀️</button>
+</nav>
+
+<!-- ПОИСК -->
+<div class="search-container" id="mainSearch">
+  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по имени или фамилии..." oninput="filterContent()">
+</div>
+
+<div class="container">
+  
+  <!-- СПИСОК МОТИВАЦИЙ -->
+  <div id="page-list" class="page-content active-page">
+    <div class="card">
+      <h2>🔥 Великие люди и их мотивация</h2>
+      <div id="motivations-list">
+        
+        <div class="motivation-card searchable-item" data-title="арнольд шварценеггер" onclick="showPage('m1')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Arnold_Schwarzenegger_2019.jpg/220px-Arnold_Schwarzenegger_2019.jpg" alt="Арнольд">
+          <div class="motivation-card-info"><h3>Арнольд Шварценеггер</h3><p>Актер, бодибилдер, политик</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="майк тайсон" onclick="showPage('m2')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Mike_Tyson_2019.jpg/220px-Mike_Tyson_2019.jpg" alt="Майк Тайсон">
+          <div class="motivation-card-info"><h3>Майк Тайсон</h3><p>Легендарный боксер</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="криштиану роналду" onclick="showPage('m3')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/220px-Cristiano_Ronaldo_2018.jpg" alt="Роналду">
+          <div class="motivation-card-info"><h3>Криштиану Роналду</h3><p>Футболист</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="брюс ли" onclick="showPage('m4')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Bruce_Lee_1973.jpg/220px-Bruce_Lee_1973.jpg" alt="Брюс Ли">
+          <div class="motivation-card-info"><h3>Брюс Ли</h3><p>Мастер боевых искусств</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="билл гейтс" onclick="showPage('m5')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bill_Gates_2017_%28cropped%29.jpg/220px-Bill_Gates_2017_%28cropped%29.jpg" alt="Билл Гейтс">
+          <div class="motivation-card-info"><h3>Билл Гейтс</h3><p>Основатель Microsoft</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="илон маск" onclick="showPage('m6')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg/220px-Elon_Musk_Royal_Society_%28crop2%29.jpg" alt="Илон Маск">
+          <div class="motivation-card-info"><h3>Илон Маск</h3><p>Основатель Tesla и SpaceX</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="стив джобс" onclick="showPage('m7')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg/220px-Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg" alt="Стив Джобс">
+          <div class="motivation-card-info"><h3>Стив Джобс</h3><p>Основатель Apple</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="мохаммед али" onclick="showPage('m8')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Muhammad_Ali_NYWTS.jpg/220px-Muhammad_Ali_NYWTS.jpg" alt="Мохаммед Али">
+          <div class="motivation-card-info"><h3>Мохаммед Али</h3><p>Легенда бокса</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="уоррен баффет" onclick="showPage('m9')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Warren_Buffett_at_the_2015_SelectUSA_Investment_Summit_%28cropped%29.jpg/220px-Warren_Buffett_at_the_2015_SelectUSA_Investment_Summit_%28cropped%29.jpg" alt="Уоррен Баффет">
+          <div class="motivation-card-info"><h3>Уоррен Баффет</h3><p>Инвестор</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="дуэйн скала джонсон" onclick="showPage('m10')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Dwayne_Johnson_2014_%28cropped%29.jpg/220px-Dwayne_Johnson_2014_%28cropped%29.jpg" alt="Дуэйн Джонсон">
+          <div class="motivation-card-info"><h3>Дуэйн «Скала» Джонсон</h3><p>Актер, рестлер</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="конор макгрегор" onclick="showPage('m11')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Conor_McGregor_2018.jpg/220px-Conor_McGregor_2018.jpg" alt="Конор Макгрегор">
+          <div class="motivation-card-info"><h3>Конор Макгрегор</h3><p>Боец MMA</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="серена уильямс" onclick="showPage('m12')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Serena_Williams_at_the_2013_US_Open.jpg/220px-Serena_Williams_at_the_2013_US_Open.jpg" alt="Серена Уильямс">
+          <div class="motivation-card-info"><h3>Серена Уильямс</h3><p>Теннисистка</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="лионель месси" onclick="showPage('m13')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Lionel_Messi_20180626.jpg/220px-Lionel_Messi_20180626.jpg" alt="Лионель Месси">
+          <div class="motivation-card-info"><h3>Лионель Месси</h3><p>Футболист</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="джек ма" onclick="showPage('m14')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Jack_Ma_2018.jpg/220px-Jack_Ma_2018.jpg" alt="Джек Ма">
+          <div class="motivation-card-info"><h3>Джек Ма</h3><p>Основатель Alibaba</p></div>
+        </div>
+
+        <div class="motivation-card searchable-item" data-title="джордан бэлфорт" onclick="showPage('m15')">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Jordan_Belfort_2017.jpg/220px-Jordan_Belfort_2017.jpg" alt="Джордан Белфорт">
+          <div class="motivation-card-info"><h3>Джордан Белфорт</h3><p>Мотивационный спикер</p></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- МОТИВАЦИИ (15 шт) -->
+  <div id="page-m1" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5b/Arnold_Schwarzenegger_2019.jpg/220px-Arnold_Schwarzenegger_2019.jpg" alt="Арнольд">
+      <h2>Арнольд Шварценеггер</h2>
+      <p>Актер, бодибилдер, политик</p>
+      <blockquote>«Для меня жизнь — это не просто существование. Это постоянное движение вперед, преодоление препятствий и достижение новых высот».</blockquote>
+      <p>Арнольд родился в Австрии в бедной семье. В 15 лет он начал заниматься бодибилдингом, и уже в 20 лет стал самым молодым «Мистером Вселенная». Он переехал в США, выучил английский и стал легендой Голливуда, а позже — губернатором Калифорнии.</p>
+      <div class="read-more" id="rec-m1"></div>
+    </div>
+  </div>
+
+  <div id="page-m2" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Mike_Tyson_2019.jpg/220px-Mike_Tyson_2019.jpg" alt="Майк Тайсон">
+      <h2>Майк Тайсон</h2>
+      <p>Легендарный боксер</p>
+      <blockquote>«Дисциплина — это делать то, что ты ненавидишь, но делать это так, как будто ты это любишь».</blockquote>
+      <p>Майк вырос в бедном районе Бруклина. Он был хулиганом, пока не встретил тренера Каса Д'Амато. Тот научил его дисциплине. В 20 лет Тайсон стал самым молодым чемпионом мира в супертяжелом весе.</p>
+      <div class="read-more" id="rec-m2"></div>
+    </div>
+  </div>
+
+  <div id="page-m3" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Cristiano_Ronaldo_2018.jpg/220px-Cristiano_Ronaldo_2018.jpg" alt="Роналду">
+      <h2>Криштиану Роналду</h2>
+      <p>Футболист</p>
+      <blockquote>«Я не хочу быть просто хорошим. Я хочу быть лучшим. И я работаю для этого каждый день».</blockquote>
+      <p>Роналду вырос на острове Мадейра и в 12 лет уехал от семьи в Лиссабон. Он плакал от одиночества, но продолжал тренироваться. Сегодня он — один из величайших футболистов в истории.</p>
+      <div class="read-more" id="rec-m3"></div>
+    </div>
+  </div>
+
+  <div id="page-m4" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Bruce_Lee_1973.jpg/220px-Bruce_Lee_1973.jpg" alt="Брюс Ли">
+      <h2>Брюс Ли</h2>
+      <p>Мастер боевых искусств</p>
+      <blockquote>«Не молитесь о легкой жизни. Молитесь о силах, чтобы выдержать трудную».</blockquote>
+      <p>Брюс Ли стал символом силы воли. Он переехал в США с 100 долларами в кармане. Из-за травмы спины врачи сказали, что он больше не сможет заниматься боевыми искусствами. Он разработал свою систему тренировок и вернулся в строй.</p>
+      <div class="read-more" id="rec-m4"></div>
+    </div>
+  </div>
+
+  <div id="page-m5" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a0/Bill_Gates_2017_%28cropped%29.jpg/220px-Bill_Gates_2017_%28cropped%29.jpg" alt="Билл Гейтс">
+      <h2>Билл Гейтс</h2>
+      <p>Основатель Microsoft</p>
+      <blockquote>«Успех — это плохой учитель. Он заставляет умных людей думать, что они не могут проиграть».</blockquote>
+      <p>Гейтс бросил Гарвард, чтобы основать Microsoft. Его первая компания провалилась. Но он не сдался. Сегодня он один из самых богатых людей мира и крупнейший филантроп.</p>
+      <div class="read-more" id="rec-m5"></div>
+    </div>
+  </div>
+
+  <div id="page-m6" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/34/Elon_Musk_Royal_Society_%28crop2%29.jpg/220px-Elon_Musk_Royal_Society_%28crop2%29.jpg" alt="Илон Маск">
+      <h2>Илон Маск</h2>
+      <p>Основатель Tesla и SpaceX</p>
+      <blockquote>«Когда что-то кажется невозможным, это просто значит, что ты еще не нашел способ это сделать».</blockquote>
+      <p>В детстве Маск подвергался издевательствам. Он читал по 10 часов в день. Когда он основал SpaceX, все говорили, что это невозможно. Сегодня его ракеты летают в космос и возвращаются обратно.</p>
+      <div class="read-more" id="rec-m6"></div>
+    </div>
+  </div>
+
+  <div id="page-m7" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg/220px-Steve_Jobs_Headshot_2010-CROP_%28cropped_2%29.jpg" alt="Стив Джобс">
+      <h2>Стив Джобс</h2>
+      <p>Основатель Apple</p>
+      <blockquote>«Ваше время ограничено, не тратьте его на то, чтобы жить чужой жизнью».</blockquote>
+      <p>Джобс основал Apple в гараже своих родителей. В 30 лет его уволили из собственной компании. Он создал Pixar и NeXT, а потом триумфально вернулся в Apple, чтобы создать iPhone.</p>
+      <div class="read-more" id="rec-m7"></div>
+    </div>
+  </div>
+
+  <div id="page-m8" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/89/Muhammad_Ali_NYWTS.jpg/220px-Muhammad_Ali_NYWTS.jpg" alt="Мохаммед Али">
+      <h2>Мохаммед Али</h2>
+      <p>Легенда бокса</p>
+      <blockquote>«Не считайте дни. Заставьте дни считаться».</blockquote>
+      <p>Али начал заниматься боксом в 12 лет после того, как у него украли велосипед. Он стал трехкратным чемпионом мира и одним из самых узнаваемых людей на планете.</p>
+      <div class="read-more" id="rec-m8"></div>
+    </div>
+  </div>
+
+  <div id="page-m9" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Warren_Buffett_at_the_2015_SelectUSA_Investment_Summit_%28cropped%29.jpg/220px-Warren_Buffett_at_the_2015_SelectUSA_Investment_Summit_%28cropped%29.jpg" alt="Уоррен Баффет">
+      <h2>Уоррен Баффет</h2>
+      <p>Инвестор</p>
+      <blockquote>«Не кладите все яйца в одну корзину. Но и не разбрасывайте их слишком далеко».</blockquote>
+      <p>Баффет купил свои первые акции в 11 лет. Его состояние сегодня превышает 100 миллиардов долларов, но он до сих пор живет в доме, который купил в 1958 году.</p>
+      <div class="read-more" id="rec-m9"></div>
+    </div>
+  </div>
+
+  <div id="page-m10" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1f/Dwayne_Johnson_2014_%28cropped%29.jpg/220px-Dwayne_Johnson_2014_%28cropped%29.jpg" alt="Дуэйн Джонсон">
+      <h2>Дуэйн «Скала» Джонсон</h2>
+      <p>Актер, рестлер</p>
+      <blockquote>«Успех не случаен. Это результат тяжелой работы, настойчивости и любви к тому, что ты делаешь».</blockquote>
+      <p>В 23 года у Дуэйна было всего 7 долларов в кармане. Он ночевал в машине. Сегодня он — самый высокооплачиваемый актер Голливуда.</p>
+      <div class="read-more" id="rec-m10"></div>
+    </div>
+  </div>
+
+  <div id="page-m11" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Conor_McGregor_2018.jpg/220px-Conor_McGregor_2018.jpg" alt="Конор Макгрегор">
+      <h2>Конор Макгрегор</h2>
+      <p>Боец MMA</p>
+      <blockquote>«Я не просто участник. Я — создатель истории».</blockquote>
+      <p>Конор жил на пособие в Дублине. Он тренировался каждый день, предсказывая свои победы. Его уверенность стала реальностью — он стал чемпионом UFC в двух весовых категориях.</p>
+      <div class="read-more" id="rec-m11"></div>
+    </div>
+  </div>
+
+  <div id="page-m12" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Serena_Williams_at_the_2013_US_Open.jpg/220px-Serena_Williams_at_the_2013_US_Open.jpg" alt="Серена Уильямс">
+      <h2>Серена Уильямс</h2>
+      <p>Теннисистка</p>
+      <blockquote>«Я действительно верю, что если ты хочешь чего-то, ты должен работать для этого».</blockquote>
+      <p>Серена выросла в бедном районе Лос-Анджелеса. Она выиграла 23 турнира Большого шлема в одиночном разряде и стала одной из величайших спортсменок в истории.</p>
+      <div class="read-more" id="rec-m12"></div>
+    </div>
+  </div>
+
+  <div id="page-m13" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Lionel_Messi_20180626.jpg/220px-Lionel_Messi_20180626.jpg" alt="Лионель Месси">
+      <h2>Лионель Месси</h2>
+      <p>Футболист</p>
+      <blockquote>«Я всегда верил в себя, даже когда никто другой не верил».</blockquote>
+      <p>В детстве у Месси диагностировали дефицит гормона роста. Из-за этого он был очень низким. Но его талант был настолько велик, что «Барселона» оплатила его лечение. Он стал лучшим футболистом мира.</p>
+      <div class="read-more" id="rec-m13"></div>
+    </div>
+  </div>
+
+  <div id="page-m14" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Jack_Ma_2018.jpg/220px-Jack_Ma_2018.jpg" alt="Джек Ма">
+      <h2>Джек Ма</h2>
+      <p>Основатель Alibaba</p>
+      <blockquote>«Никогда не сдавайся. Сегодня тяжело, завтра будет еще тяжелее, но послезавтра будет прекрасно».</blockquote>
+      <p>Джек Ма провалил экзамены в колледж дважды. Его не взяли на работу в 30 разных местах. Он создал Alibaba, которая стала крупнейшей e-commerce компанией в мире.</p>
+      <div class="read-more" id="rec-m14"></div>
+    </div>
+  </div>
+
+  <div id="page-m15" class="page-content">
+    <a class="btn-back" onclick="showPage('list')">← Назад к мотивациям</a>
+    <div class="card motivation-content">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f8/Jordan_Belfort_2017.jpg/220px-Jordan_Belfort_2017.jpg" alt="Джордан Белфорт">
+      <h2>Джордан Белфорт</h2>
+      <p>Мотивационный спикер</p>
+      <blockquote>«Ты всегда можешь начать заново. Главное — не сдаваться».</blockquote>
+      <p>Белфорт пережил финансовый крах, тюремное заключение и потерю семьи. Он написал книгу «Волк с Уолл-Стрит», по которой сняли фильм. Сегодня он мотивирует миллионы людей.</p>
+      <div class="read-more" id="rec-m15"></div>
+    </div>
+  </div>
+
+  <footer>&copy; 2026 FitCalc. Все права защищены.</footer>
+</div>
+
+<button onclick="scrollToTop()" id="scrollTopBtn" title="Наверх">↑</button>
+
+<script>
+// Список всех мотиваций (для перелинковки)
+const allMotivations = [
+  { id: 'm1', name: 'Арнольд Шварценеггер' },
+  { id: 'm2', name: 'Майк Тайсон' },
+  { id: 'm3', name: 'Криштиану Роналду' },
+  { id: 'm4', name: 'Брюс Ли' },
+  { id: 'm5', name: 'Билл Гейтс' },
+  { id: 'm6', name: 'Илон Маск' },
+  { id: 'm7', name: 'Стив Джобс' },
+  { id: 'm8', name: 'Мохаммед Али' },
+  { id: 'm9', name: 'Уоррен Баффет' },
+  { id: 'm10', name: 'Дуэйн «Скала» Джонсон' },
+  { id: 'm11', name: 'Конор Макгрегор' },
+  { id: 'm12', name: 'Серена Уильямс' },
+  { id: 'm13', name: 'Лионель Месси' },
+  { id: 'm14', name: 'Джек Ма' },
+  { id: 'm15', name: 'Джордан Белфорт' }
+];
+
+// Генерация рекомендаций (по 3 штуки)
+function generateRecommendations() {
+  allMotivations.forEach((item, index) => {
+    let recs = [];
+    for (let i = 1; i <= 3; i++) {
+      let nextIndex = (index + i) % allMotivations.length;
+      recs.push(allMotivations[nextIndex]);
+    }
+    const container = document.getElementById('rec-' + item.id);
+    if(container) {
+      let html = '<h3>Читайте также:</h3><ul>';
+      recs.forEach(rec => {
+        html += `<li><a onclick="showPage('${rec.id}')">${rec.name}</a></li>`;
+      });
+      html += '</ul>';
+      container.innerHTML = html;
+    }
+  });
+}
+generateRecommendations();
+
+// --- ЛОГИКА ПЕРЕКЛЮЧЕНИЯ СТРАНИЦ ---
+function showPage(pageId) {
+  document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active-page'));
+  document.getElementById('page-' + pageId).classList.add('active-page');
+  
+  const searchBox = document.getElementById('mainSearch');
+  if (pageId === 'list') {
+    searchBox.classList.remove('hidden');
+  } else {
+    searchBox.classList.add('hidden');
+  }
+  
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// --- УМНЫЙ ПОИСК ---
+function filterContent() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const items = document.querySelectorAll('.searchable-item');
+  
+  items.forEach(item => {
+    const title = item.getAttribute('data-title') || '';
+    // Ищем по корню (Гейтс найдет Гейтса)
+    const rootQuery = query.substring(0, Math.max(3, query.length - 1)); 
+    if (title.includes(rootQuery) || title.includes(query)) {
+      item.style.display = 'flex';
+    } else {
+      item.style.display = 'none';
+    }
+  });
+}
+
+// --- СМЕНА ТЕМ (4 иконки) ---
+let currentTheme = 0;
+const themes = ['', 'theme-dark', 'theme-light-blue', 'theme-grey-blue'];
+const themeIcons = ['☀️', '🌙', '💧', '☁️'];
+
+function cycleTheme(btn) {
+  document.body.classList.remove(...themes);
+  currentTheme = (currentTheme + 1) % themes.length;
+  if(themes[currentTheme] !== '') { document.body.classList.add(themes[currentTheme]); }
+  btn.textContent = themeIcons[currentTheme];
+}
+
+// Авто-тема при загрузке
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.body.classList.add('theme-dark');
+  document.getElementById('themeBtn').textContent = '🌙';
+  currentTheme = 1;
+}
+
+// --- КНОПКА НАВЕРХ ---
+window.onscroll = function() {
+  const btn = document.getElementById("scrollTopBtn");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    btn.style.display = "block";
+  } else {
+    btn.style.display = "none";
+  }
+};
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
