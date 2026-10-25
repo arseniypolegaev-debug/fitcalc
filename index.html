@@ -6,27 +6,33 @@
 <title>FitCalc | Здоровье и спорт</title>
 <meta name="description" content="Бесплатные фитнес-калькуляторы и полезные статьи о здоровье, питании и тренировках. Рассчитайте калории, БЖУ, норму воды и идеальный вес.">
 <style>
-  /* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМ --- */
-  :root {
-    --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0;
-    --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc;
-    --text-color: #1e293b; --text-muted: #475569;
-    --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8);
-    --input-bg: #ffffff; --input-border: #cbd5e1;
-    --btn-bg: #2563eb; --btn-hover: #1d4ed8; --btn-text: #ffffff;
-    --nav-bg: rgba(255, 255, 255, 0.95);
-    --hero-bg: linear-gradient(135deg, #2563eb, #3b82f6);
+  /* --- 4 ТЕМЫ --- */
+  :root { /* Светлая (по умолчанию) */
+    --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0; --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc;
+    --text-color: #1e293b; --text-muted: #475569; --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8);
+    --input-bg: #ffffff; --input-border: #cbd5e1; --btn-bg: #2563eb; --btn-hover: #1d4ed8; --btn-text: #ffffff;
+    --nav-bg: rgba(255, 255, 255, 0.95); --hero-bg: linear-gradient(135deg, #2563eb, #3b82f6);
   }
 
-  body.dark-theme {
-    --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b;
-    --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827;
-    --text-color: #f8fafc; --text-muted: #94a3b8;
-    --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1);
-    --input-bg: #0f172a; --input-border: #334155;
-    --btn-bg: #3b82f6; --btn-hover: #2563eb;
-    --nav-bg: rgba(15, 23, 42, 0.95);
-    --hero-bg: linear-gradient(135deg, #1e3a8a, #1e40af);
+  body.theme-dark {
+    --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b; --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827;
+    --text-color: #f8fafc; --text-muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1);
+    --input-bg: #0f172a; --input-border: #334155; --btn-bg: #3b82f6; --btn-hover: #2563eb;
+    --nav-bg: rgba(15, 23, 42, 0.95); --hero-bg: linear-gradient(135deg, #1e3a8a, #1e40af);
+  }
+
+  body.theme-light-blue {
+    --bg-gradient-1: #e0f2fe; --bg-gradient-2: #bae6fd; --bg-gradient-3: #7dd3fc; --bg-gradient-4: #f0f9ff;
+    --text-color: #0f172a; --text-muted: #334155; --card-bg: rgba(255, 255, 255, 0.85); --card-border: rgba(255, 255, 255, 0.6);
+    --input-bg: #ffffff; --input-border: #bae6fd; --btn-bg: #0284c7; --btn-hover: #0369a1;
+    --nav-bg: rgba(224, 242, 254, 0.95); --hero-bg: linear-gradient(135deg, #0284c7, #38bdf8);
+  }
+
+  body.theme-grey-blue {
+    --bg-gradient-1: #cbd5e1; --bg-gradient-2: #94a3b8; --bg-gradient-3: #64748b; --bg-gradient-4: #e2e8f0;
+    --text-color: #0f172a; --text-muted: #334155; --card-bg: rgba(255, 255, 255, 0.85); --card-border: rgba(255, 255, 255, 0.5);
+    --input-bg: #f1f5f9; --input-border: #94a3b8; --btn-bg: #475569; --btn-hover: #334155;
+    --nav-bg: rgba(203, 213, 225, 0.95); --hero-bg: linear-gradient(135deg, #475569, #64748b);
   }
 
   /* --- БАЗОВЫЕ СТИЛИ --- */
@@ -35,15 +41,22 @@
 
   /* --- НАВИГАЦИЯ --- */
   .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+  .nav-left { display: flex; flex-direction: column; gap: 5px; }
   .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; cursor: pointer; letter-spacing: -0.5px; }
+  .lang-switch { font-size: 12px; font-weight: bold; color: var(--text-muted); cursor: pointer; display: flex; gap: 5px; }
+  .lang-switch span:hover { color: var(--btn-bg); }
+  .lang-switch .active { color: var(--btn-bg); text-decoration: underline; }
+  
   .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
   .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; }
   .nav-links a:hover, .nav-links a.active { background: var(--btn-bg); color: #fff; }
-  .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
+  
+  .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 16px; transition: all 0.3s; }
   .theme-toggle:hover { background: var(--input-border); }
 
   /* --- ПОИСК --- */
-  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; }
+  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; transition: all 0.3s; }
+  .search-container.hidden { display: none; }
   .search-input { width: 100%; max-width: 600px; padding: 10px 15px; border: 1px solid var(--input-border); border-radius: 20px; font-size: 15px; background: var(--input-bg); color: var(--text-color); transition: all 0.3s ease; }
   .search-input:focus { outline: none; border-color: var(--btn-bg); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
 
@@ -60,7 +73,7 @@
   h2 { font-size: 22px; margin-top: 0; text-align: left; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; display: flex; align-items: center; gap: 10px; }
   h3 { font-size: 18px; color: var(--text-color); margin-top: 20px; margin-bottom: 10px; }
 
-  /* --- СТИЛИ ДЛЯ СТАТЕЙ --- */
+  /* --- СТАТЬИ --- */
   .article-card { cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; padding: 15px; border: 1px solid var(--card-border); border-radius: 12px; }
   .article-card:hover { transform: translateY(-2px); border-color: var(--btn-bg); background: var(--input-bg); }
   .article-card h3 { margin-top: 0; color: var(--btn-bg); border-bottom: none; margin-bottom: 5px; }
@@ -73,7 +86,7 @@
   .article-content th, .article-content td { border: 1px solid var(--card-border); padding: 10px; text-align: left; }
   .article-content th { background: var(--input-bg); color: var(--text-color); }
   
-  .btn-back { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none; }
+  .btn-back { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
   .btn-back:hover { background: var(--input-border); }
 
   /* Блок "Читайте также" */
@@ -81,20 +94,22 @@
   .read-more h3 { margin-top: 0; font-size: 18px; color: var(--text-color); }
   .read-more ul { list-style: none; padding: 0; }
   .read-more li { margin-bottom: 10px; }
-  .read-more a { color: var(--btn-bg); text-decoration: none; font-weight: 600; cursor: pointer; }
-  .read-more a:hover { text-decoration: underline; }
+  .read-more a { color: var(--btn-bg); text-decoration: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
+  .read-more a:hover { text-decoration: underline; padding-left: 5px; }
 
-  /* --- ФОРМЫ --- */
+  /* --- ФОРМЫ И КНОПКИ --- */
   label { display: block; margin: 16px 0 6px; font-weight: 600; font-size: 14px; color: var(--text-muted); }
   input, select { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 8px; font-size: 16px; box-sizing: border-box; transition: all 0.3s ease; background: var(--input-bg); color: var(--text-color); }
   input:focus, select:focus { outline: none; border-color: var(--btn-bg); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
 
   .action-buttons { display: flex; gap: 10px; margin-top: 24px; }
-  button.btn-primary { flex: 2; padding: 14px; background: var(--btn-bg); color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: background 0.2s, transform 0.1s; }
-  button.btn-primary:hover { background: var(--btn-hover); }
-  button.btn-primary:active { transform: scale(0.98); }
-  button.btn-secondary { flex: 1; padding: 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--input-border); border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.2s; }
-  button.btn-secondary:hover { background: var(--input-border); color: var(--text-color); }
+  button.btn-primary { flex: 2; padding: 14px; background: var(--btn-bg); color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+  button.btn-primary:hover { background: var(--btn-hover); transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+  button.btn-primary:active { transform: scale(0.96); }
+  
+  button.btn-secondary { flex: 1; padding: 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--input-border); border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+  button.btn-secondary:hover { background: var(--input-border); color: var(--text-color); transform: translateY(-2px); }
+  button.btn-secondary:active { transform: scale(0.96); }
 
   /* --- РЕЗУЛЬТАТЫ --- */
   .result { margin-top: 24px; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; display: none; animation: fadeIn 0.5s ease-in-out; color: #1e293b; }
@@ -137,7 +152,6 @@
   }
   #scrollTopBtn:hover { background-color: var(--btn-hover); }
 
-  /* --- ПОДВАЛ --- */
   footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; font-weight: 500; }
 
   @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
@@ -154,20 +168,25 @@
 
 <!-- НАВИГАЦИЯ -->
 <nav class="navbar">
-  <a class="nav-logo" onclick="showPage('calc')">FitCalc</a>
+  <div class="nav-left">
+    <a class="nav-logo" onclick="showPage('calc')">FitCalc</a>
+    <div class="lang-switch">
+      <span class="active" onclick="alert('Полный перевод сайта находится в разработке. Пока доступен только русский язык.')">RU</span> | 
+      <span onclick="alert('Полный перевод сайта находится в разработке. Пока доступен только русский язык.')">EN</span>
+    </div>
+  </div>
   <div class="nav-links">
     <a class="nav-link active" onclick="showPage('calc')" id="link-calc">Калькуляторы</a>
-    <!-- ВОТ ЗДЕСЬ ИЗМЕНЕНИЕ: Ссылка ведет на новый файл -->
-    <a class="nav-link" href="articles.html" id="link-articles">Статьи</a>
+    <a class="nav-link" href="articles.html">Статьи</a>
     <a class="nav-link" onclick="showPage('about')" id="link-about">О сайте</a>
     <a class="nav-link" onclick="showPage('privacy')" id="link-privacy">Политика</a>
   </div>
-  <button class="theme-toggle" onclick="toggleTheme()">🌓 Тема</button>
+  <button class="theme-toggle" id="themeBtn" onclick="cycleTheme()">☀️</button>
 </nav>
 
-<!-- ПОИСК -->
-<div class="search-container">
-  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по статьям и калькуляторам..." oninput="filterContent()">
+<!-- ПОИСК (скрывается на некоторых страницах) -->
+<div class="search-container" id="mainSearch">
+  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по калькуляторам..." oninput="filterContent()">
 </div>
 
 <div class="container">
@@ -214,7 +233,10 @@
         <option value="0.5">Умеренная (прогулки, легкий спорт)</option>
         <option value="1">Высокая (интенсивные тренировки)</option>
       </select>
-      <div class="action-buttons"><button class="btn-primary" onclick="calculateWater()">Рассчитать</button></div>
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="calculateWater()">Рассчитать</button>
+        <button class="btn-secondary" onclick="resetWater()">Сброс</button>
+      </div>
       <div class="result water-result" id="result-water">
         <p>Ваша норма воды: <br><span class="water-value" id="water-result-val"></span> литров в день</p>
       </div>
@@ -229,7 +251,10 @@
         <option value="maintain" selected>Поддержание веса</option>
         <option value="gain">Набор мышечной массы</option>
       </select>
-      <div class="action-buttons"><button class="btn-primary" onclick="calculateMacros()">Рассчитать</button></div>
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="calculateMacros()">Рассчитать</button>
+        <button class="btn-secondary" onclick="resetMacros()">Сброс</button>
+      </div>
       <div class="result macro-result" id="result-macros">
         <p>Белки: <span class="macro-value" id="protein"></span> г/день</p>
         <p>Жиры: <span class="macro-value" id="fat"></span> г/день</p>
@@ -240,7 +265,10 @@
     <div class="card searchable-item" data-title="калькулятор идеального веса">
       <h2>⚖️ Калькулятор идеального веса</h2>
       <label>Ваш рост (см)</label><input type="number" id="ideal-height" placeholder="Например, 175">
-      <div class="action-buttons"><button class="btn-primary" onclick="calculateIdealWeight()">Рассчитать</button></div>
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="calculateIdealWeight()">Рассчитать</button>
+        <button class="btn-secondary" onclick="resetIdeal()">Сброс</button>
+      </div>
       <div class="result ideal-result" id="result-ideal">
         <p>Ваш идеальный вес: <br><span class="ideal-value" id="ideal-weight-val"></span> кг</p>
         <p style="font-size: 13px; color: #64748b; margin-top: 10px;">Рассчитано по формуле Брока.</p>
@@ -257,7 +285,10 @@
       <div id="hip-container" style="display:none;">
         <label>Обхват бедер (см) (только для женщин)</label><input type="number" id="fat-hip" placeholder="Например, 95">
       </div>
-      <div class="action-buttons"><button class="btn-primary" onclick="calculateFat()">Рассчитать</button></div>
+      <div class="action-buttons">
+        <button class="btn-primary" onclick="calculateFat()">Рассчитать</button>
+        <button class="btn-secondary" onclick="resetFat()">Сброс</button>
+      </div>
       <div class="result fat-result" id="result-fat">
         <p>Процент жира в теле: <br><span class="fat-value" id="fat-val"></span>%</p>
       </div>
@@ -276,7 +307,7 @@
     </div>
   </div>
 
-  <!-- СТАРЫЕ СТАТЬИ (ОСТАВЛЯЕМ ДЛЯ ИСТОРИИ, НО ОНИ СКРЫТЫ ИЗ МЕНЮ) -->
+  <!-- СТАРЫЕ СТАТЬИ (СКРЫТЫ) -->
   <div id="page-article-1" class="page-content">
     <a class="btn-back" onclick="showPage('calc')">← Назад на главную</a>
     <div class="card article-content">
@@ -311,14 +342,12 @@
     </div>
   </div>
 
-  <!-- ПОДВАЛ -->
   <footer>
     &copy; 2026 FitCalc. Все права защищены.
   </footer>
 
 </div>
 
-<!-- КНОПКА НАВЕРХ -->
 <button onclick="scrollToTop()" id="scrollTopBtn" title="Наверх">↑</button>
 
 <script>
@@ -335,17 +364,27 @@ function showPage(pageId) {
     document.getElementById('link-' + pageId).classList.add('active');
   }
   
+  // Скрываем поиск на страницах О сайте и Политика
+  const searchBox = document.getElementById('mainSearch');
+  if (pageId === 'about' || pageId === 'privacy') {
+    searchBox.classList.add('hidden');
+  } else {
+    searchBox.classList.remove('hidden');
+  }
+  
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// --- ЛОГИКА ПОИСКА ---
+// --- УМНЫЙ ПОИСК (ПО КОРНЮ СЛОВА) ---
 function filterContent() {
-  const query = document.getElementById('searchInput').value.toLowerCase();
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
   const items = document.querySelectorAll('.searchable-item');
   
   items.forEach(item => {
     const title = item.getAttribute('data-title') || '';
-    if (title.includes(query)) {
+    // Ищем по корню (если ввели "вода", ищем "вод")
+    const rootQuery = query.substring(0, Math.max(3, query.length - 1)); 
+    if (title.includes(rootQuery) || title.includes(query)) {
       item.style.display = 'block';
     } else {
       item.style.display = 'none';
@@ -353,15 +392,19 @@ function filterContent() {
   });
 }
 
-// --- ПОКАЗ ПРОЦЕНТА ЖИРА (Поля для женщин) ---
-document.getElementById('fat-sex').addEventListener('change', function() {
-  const hipContainer = document.getElementById('hip-container');
-  if (this.value === 'female') {
-    hipContainer.style.display = 'block';
-  } else {
-    hipContainer.style.display = 'none';
+// --- 4 ТЕМЫ (ПЕРЕКЛЮЧЕНИЕ) ---
+let currentTheme = 0;
+const themes = ['', 'theme-dark', 'theme-light-blue', 'theme-grey-blue'];
+const themeIcons = ['☀️', '🌙', '💧', '🌫️'];
+
+function cycleTheme() {
+  document.body.classList.remove(...themes);
+  currentTheme = (currentTheme + 1) % themes.length;
+  if(themes[currentTheme] !== '') {
+    document.body.classList.add(themes[currentTheme]);
   }
-});
+  document.getElementById('themeBtn').textContent = themeIcons[currentTheme];
+}
 
 // --- КАЛЬКУЛЯТОРЫ ---
 function calculateCalories() {
@@ -450,6 +493,7 @@ function calculateFat() {
   document.getElementById('result-fat').style.display = 'block';
 }
 
+// --- ФУНКЦИИ СБРОСА ---
 function resetForm() {
   document.getElementById('age').value = '';
   document.getElementById('weight').value = '';
@@ -458,14 +502,40 @@ function resetForm() {
   document.getElementById('activity').selectedIndex = 0;
   document.getElementById('result-calories').style.display = 'none';
 }
+function resetWater() {
+  document.getElementById('water-weight').value = '';
+  document.getElementById('water-activity').selectedIndex = 0;
+  document.getElementById('result-water').style.display = 'none';
+}
+function resetMacros() {
+  document.getElementById('macro-weight').value = '';
+  document.getElementById('macro-goal').selectedIndex = 1;
+  document.getElementById('result-macros').style.display = 'none';
+}
+function resetIdeal() {
+  document.getElementById('ideal-height').value = '';
+  document.getElementById('result-ideal').style.display = 'none';
+}
+function resetFat() {
+  document.getElementById('fat-height').value = '';
+  document.getElementById('fat-neck').value = '';
+  document.getElementById('fat-waist').value = '';
+  document.getElementById('fat-hip').value = '';
+  document.getElementById('fat-sex').selectedIndex = 0;
+  document.getElementById('hip-container').style.display = 'none';
+  document.getElementById('result-fat').style.display = 'none';
+}
+
+// --- ОСТАЛЬНОЕ ---
+document.getElementById('fat-sex').addEventListener('change', function() {
+  const hipContainer = document.getElementById('hip-container');
+  if (this.value === 'female') { hipContainer.style.display = 'block'; }
+  else { hipContainer.style.display = 'none'; }
+});
 
 function toggleFaq(button) {
   button.classList.toggle('active');
   button.nextElementSibling.classList.toggle('open');
-}
-
-function toggleTheme() {
-  document.body.classList.toggle('dark-theme');
 }
 
 window.onscroll = function() {
