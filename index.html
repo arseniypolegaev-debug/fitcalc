@@ -29,75 +29,28 @@
   }
 
   /* --- БАЗОВЫЕ СТИЛИ --- */
-  body { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    margin: 0; padding: 0 0 20px 0; 
-    color: var(--text-color); line-height: 1.6;
-    transition: color 0.4s ease;
-    background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4));
-    background-size: 400% 400%;
-    animation: gradientBG 25s ease infinite;
-    min-height: 100vh;
-  }
-
-  @keyframes gradientBG {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0 0 20px 0; color: var(--text-color); line-height: 1.6; transition: color 0.4s ease; background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4)); background-size: 400% 400%; animation: gradientBG 25s ease infinite; min-height: 100vh; }
+  @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
   /* --- НАВИГАЦИЯ --- */
-  .navbar {
-    background: var(--nav-bg); backdrop-filter: blur(10px);
-    border-bottom: 1px solid var(--card-border);
-    position: sticky; top: 0; z-index: 100;
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 12px 20px;
-  }
-
+  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; }
   .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; cursor: pointer; letter-spacing: -0.5px; }
-  
   .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
-  
-  .nav-links a {
-    text-decoration: none; color: var(--text-color);
-    font-weight: 600; font-size: 15px;
-    padding: 8px 14px; border-radius: 8px;
-    transition: all 0.3s ease; cursor: pointer;
-  }
-  
-  .nav-links a:hover, .nav-links a.active {
-    background: var(--btn-bg); color: #fff;
-  }
-
-  .theme-toggle {
-    background: transparent; border: 1px solid var(--input-border);
-    color: var(--text-color); padding: 8px 14px; border-radius: 20px;
-    cursor: pointer; font-size: 14px; transition: all 0.3s;
-  }
+  .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; }
+  .nav-links a:hover, .nav-links a.active { background: var(--btn-bg); color: #fff; }
+  .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
   .theme-toggle:hover { background: var(--input-border); }
 
   /* --- КОНТЕЙНЕР --- */
   .container { max-width: 800px; margin: 20px auto; padding: 0 20px; position: relative; z-index: 1; }
 
   /* --- HERO-СЕКЦИЯ --- */
-  .hero {
-    background: var(--hero-bg); color: #ffffff;
-    border-radius: 20px; padding: 50px 30px; text-align: center;
-    margin-bottom: 30px; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2);
-    animation: fadeIn 0.8s ease-in-out;
-  }
+  .hero { background: var(--hero-bg); color: #ffffff; border-radius: 20px; padding: 50px 30px; text-align: center; margin-bottom: 30px; box-shadow: 0 10px 30px rgba(37, 99, 235, 0.2); animation: fadeIn 0.8s ease-in-out; }
   .hero h1 { font-size: 32px; margin-top: 0; margin-bottom: 15px; color: #fff; }
   .hero p { font-size: 18px; opacity: 0.9; margin: 0; }
 
   /* --- КАРТОЧКИ --- */
-  .card { 
-    background: var(--card-bg); backdrop-filter: blur(12px);
-    border: 1px solid var(--card-border); border-radius: 16px; 
-    padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); 
-    margin-bottom: 24px; transition: all 0.4s ease;
-  }
-  
+  .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); margin-bottom: 24px; transition: all 0.4s ease; }
   h2 { font-size: 22px; margin-top: 0; text-align: left; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; display: flex; align-items: center; gap: 10px; }
   h3 { font-size: 18px; color: var(--text-color); margin-top: 20px; margin-bottom: 10px; }
 
@@ -114,17 +67,11 @@
   .article-content th, .article-content td { border: 1px solid var(--card-border); padding: 10px; text-align: left; }
   .article-content th { background: var(--input-bg); color: var(--text-color); }
   
-  .btn-back {
-    display: inline-block; margin-bottom: 20px; padding: 8px 16px;
-    background: var(--input-bg); border: 1px solid var(--input-border);
-    border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none;
-  }
+  .btn-back { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none; }
   .btn-back:hover { background: var(--input-border); }
 
   /* Блок "Читайте также" */
-  .read-more {
-    margin-top: 30px; padding-top: 20px; border-top: 2px dashed var(--card-border);
-  }
+  .read-more { margin-top: 30px; padding-top: 20px; border-top: 2px dashed var(--card-border); }
   .read-more h3 { margin-top: 0; font-size: 18px; color: var(--text-color); }
   .read-more ul { list-style: none; padding: 0; }
   .read-more li { margin-bottom: 10px; }
@@ -290,125 +237,231 @@
         <h3>Сколько калорий нужно в день, чтобы похудеть?</h3>
         <p>Узнайте, как правильно рассчитать дефицит калорий для безопасного снижения веса, и почему жесткие диеты не работают.</p>
       </div>
-
       <div class="article-card" onclick="showPage('article-2')">
         <h3>Почему вы не худеете? 5 скрытых причин</h3>
         <p>Едите меньше, а вес стоит на месте? Разбираем самые частые ошибки, которые мешают вам достичь цели.</p>
       </div>
-
       <div class="article-card" onclick="showPage('article-3')">
         <h3>Сколько воды нужно пить в день и как не заставлять себя</h3>
         <p>Вода — основа жизни. Узнайте свою норму и простые лайфхаки, чтобы не забывать пить воду в течение дня.</p>
       </div>
+      <div class="article-card" onclick="showPage('article-4')">
+        <h3>Как набрать мышечную массу новичку: пошаговый план</h3>
+        <p>Хотите стать больше и сильнее? Разбираем питание, тренировки и восстановление для роста мышц.</p>
+      </div>
+      <div class="article-card" onclick="showPage('article-5')">
+        <h3>Сколько сахара можно есть в день без вреда для здоровья</h3>
+        <p>ВОЗ бьет тревогу: мы едим слишком много сахара. Узнайте безопасную норму и где скрывается сахар.</p>
+      </div>
+      <div class="article-card" onclick="showPage('article-6')">
+        <h3>Почему болит все тело после тренировки и что делать</h3>
+        <p>Крепатура — это нормально или опасно? Как ускорить восстановление и когда стоит бить тревогу.</p>
+      </div>
+      <div class="article-card" onclick="showPage('article-7')">
+        <h3>Как начать бегать с нуля: план для новичков</h3>
+        <p>Бег — это не просто, но очень полезно. Пошаговая инструкция, как войти в ритм и не бросить.</p>
+      </div>
+      <div class="article-card" onclick="showPage('article-8')">
+        <h3>Вреден ли кофе и сколько его можно пить</h3>
+        <p>Кофе: друг или враг? Разбираем влияние кофеина на организм и безопасные дозировки.</p>
+      </div>
     </div>
   </div>
 
-  <!-- СТРАНИЦА 3: СТАТЬЯ 1 -->
+  <!-- СТАТЬЯ 1 -->
   <div id="page-article-1" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
       <h2>Сколько калорий нужно в день, чтобы похудеть?</h2>
       <p>Похудение — это математика. Если вы потребляете меньше энергии, чем тратите, ваш организм начинает сжигать жировые запасы. Однако вопрос не в том, чтобы голодать, а в том, чтобы создать правильный дефицит.</p>
-      
       <h3>Что такое дефицит калорий?</h3>
       <p>Дефицит калорий — это разница между количеством калорий, которые вы получаете с пищей, и количеством, которое ваше тело расходует. Чтобы терять около 0.5 кг в неделю (безопасный темп), вам нужно создать дефицит примерно в 500 ккал в день.</p>
-      
       <h3>Как рассчитать свою норму?</h3>
       <p>Сначала вам нужно узнать свою норму для поддержания веса. Для этого используйте наш калькулятор калорий. Затем вычтите из этого числа 15–20%.</p>
       <table>
-        <tr><th>Пол</th><th>Средняя норма (для поддержания)</th><th>Норма для похудения (-20%)</th></tr>
+        <tr><th>Пол</th><th>Средняя норма (поддержание)</th><th>Норма для похудения (-20%)</th></tr>
         <tr><td>Мужчина (70 кг, сидячий)</td><td>~2000 ккал</td><td>~1600 ккал</td></tr>
         <tr><td>Женщина (60 кг, сидячий)</td><td>~1600 ккал</td><td>~1280 ккал</td></tr>
       </table>
-
-      <h3>Почему жесткие диеты — зло?</h3>
-      <p>Если вы урежете калории слишком сильно (например, до 1000 ккал), организм воспримет это как голод. Замедлится метаболизм, начнут разрушаться мышцы, а вес вскоре вернется с избытком.</p>
-      <ul>
-        <li><strong>Не опускайтесь ниже базового метаболизма.</strong></li>
-        <li><strong>Ешьте достаточно белка</strong>, чтобы сохранить мышцы.</li>
-        <li><strong>Пейте воду</strong> — иногда жажда маскируется под голод.</li>
-      </ul>
-      
-      <p style="margin-top: 30px; text-align: center;">
-        <button class="btn-primary" onclick="showPage('calc')">Перейти к калькулятору калорий</button>
-      </p>
-
-      <div class="read-more">
-        <h3>Читайте также:</h3>
-        <ul>
-          <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
-          <li><a onclick="showPage('article-3')">Сколько воды нужно пить в день и как не заставлять себя</a></li>
-        </ul>
-      </div>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Перейти к калькулятору калорий</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+        <li><a onclick="showPage('article-3')">Сколько воды нужно пить в день</a></li>
+      </ul></div>
     </div>
   </div>
 
-  <!-- СТРАНИЦА 4: СТАТЬЯ 2 -->
+  <!-- СТАТЬЯ 2 -->
   <div id="page-article-2" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
       <h2>Почему вы не худеете? 5 скрытых причин</h2>
       <p>Ситуация, когда вы прилагаете усилия, но вес не сдвигается с мертвой точки, может быть очень расстраивающей. Чаще всего проблема кроется в незаметных деталях.</p>
-      
       <h3>1. Вы недооцениваете калории</h3>
-      <p>Исследования показывают, что люди склонны недооценивать количество съеденной пищи на 20–30%. Масло для жарки, соусы, перекусы «на бегу» — всё это содержит калории. Ведите дневник питания хотя бы неделю.</p>
-      
+      <p>Исследования показывают, что люди склонны недооценивать количество съеденной пищи на 20–30%. Масло для жарки, соусы, перекусы «на бегу» — всё это содержит калории.</p>
       <h3>2. Хронический стресс и недосып</h3>
-      <p>Когда вы мало спите, организм вырабатывает больше гормона голода (грелина) и меньше гормона насыщения (лептина). Вы начинаете больше хотеть сладкого и жирного.</p>
-      
+      <p>Когда вы мало спите, организм вырабатывает больше гормона голода (грелина) и меньше гормона насыщения (лептина).</p>
       <h3>3. Мало белка в рационе</h3>
-      <p>Белок не только помогает сохранить мышцы при дефиците калорий, но и требует больше энергии на переваривание (термический эффект пищи).</p>
-
+      <p>Белок не только помогает сохранить мышцы при дефиците калорий, но и требует больше энергии на переваривание.</p>
       <h3>4. Скрытые калории в напитках</h3>
-      <p>Сладкий кофе, соки, газировка и даже «здоровые» смузи могут содержать до 300–500 ккал в день. Жидкие калории практически не насыщают.</p>
-
+      <p>Сладкий кофе, соки, газировка могут содержать до 300–500 ккал в день. Жидкие калории практически не насыщают.</p>
       <h3>5. Вы мало двигаетесь вне тренировок</h3>
-      <p>Вы можете ходить в зал 3 раза в неделю, но если остальное время вы сидите (на работе, дома, в машине), ваш общий расход энергии будет низким. Старайтесь проходить 7000–10000 шагов в день.</p>
-      
-      <p style="margin-top: 30px; text-align: center;">
-        <button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму калорий</button>
-      </p>
-
-      <div class="read-more">
-        <h3>Читайте также:</h3>
-        <ul>
-          <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
-          <li><a onclick="showPage('article-3')">Сколько воды нужно пить в день и как не заставлять себя</a></li>
-        </ul>
-      </div>
+      <p>Вы можете ходить в зал 3 раза в неделю, но если остальное время вы сидите, ваш общий расход энергии будет низким.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму калорий</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+        <li><a onclick="showPage('article-8')">Вреден ли кофе и сколько его можно пить</a></li>
+      </ul></div>
     </div>
   </div>
 
-  <!-- СТРАНИЦА 5: СТАТЬЯ 3 -->
+  <!-- СТАТЬЯ 3 -->
   <div id="page-article-3" class="page-content">
     <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
     <div class="card article-content">
       <h2>Сколько воды нужно пить в день и как не заставлять себя</h2>
-      <p>Вода — это самый важный элемент для нашего организма. Она участвует во всех обменных процессах, помогает пищеварению и даже способствует снижению веса (если пить воду перед едой).</p>
-      
+      <p>Вода — это самый важный элемент для нашего организма. Она участвует во всех обменных процессах, помогает пищеварению и даже способствует снижению веса.</p>
       <h3>Как рассчитать свою норму?</h3>
-      <p>Универсальная формула: <strong>30 мл воды на 1 кг веса</strong>. Если вы весите 70 кг, ваша норма — около 2.1 литра в день. При активных тренировках или в жаркую погоду норму нужно увеличивать.</p>
-      
+      <p>Универсальная формула: <strong>30 мл воды на 1 кг веса</strong>. Если вы весите 70 кг, ваша норма — около 2.1 литра в день.</p>
       <h3>Почему так сложно пить воду?</h3>
-      <p>Многие люди просто забывают пить, или им не нравится вкус воды. Вот несколько простых лайфхаков:</p>
+      <p>Вот несколько простых лайфхаков:</p>
       <ul>
-        <li><strong>Бутылка на видном месте:</strong> поставьте бутылку воды на рабочий стол или носите её с собой.</li>
-        <li><strong>Приложения-напоминалки:</strong> существуют специальные приложения для телефона, которые вибрируют и напоминают сделать глоток.</li>
-        <li><strong>Добавьте вкус:</strong> бросьте в бутылку лимон, огурец или мяту — это сделает воду вкуснее без сахара.</li>
-        <li><strong>Пейте перед едой:</strong> стакан воды за 30 минут до еды поможет не только насытиться быстрее, но и улучшит пищеварение.</li>
+        <li><strong>Бутылка на видном месте:</strong> поставьте бутылку воды на рабочий стол.</li>
+        <li><strong>Приложения-напоминалки:</strong> специальные приложения для телефона.</li>
+        <li><strong>Добавьте вкус:</strong> бросьте в бутылку лимон или мяту.</li>
+        <li><strong>Пейте перед едой:</strong> стакан воды за 30 минут до еды.</li>
       </ul>
-      
-      <p style="margin-top: 30px; text-align: center;">
-        <button class="btn-primary" onclick="showPage('calc')">Рассчитать точную норму воды</button>
-      </p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать точную норму воды</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+        <li><a onclick="showPage('article-5')">Сколько сахара можно есть в день без вреда</a></li>
+      </ul></div>
+    </div>
+  </div>
 
-      <div class="read-more">
-        <h3>Читайте также:</h3>
-        <ul>
-          <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
-          <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
-        </ul>
-      </div>
+  <!-- СТАТЬЯ 4 -->
+  <div id="page-article-4" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как набрать мышечную массу новичку: пошаговый план</h2>
+      <p>Набор мышечной массы — это не просто поход в зал и поднятие тяжестей. Это комплексный процесс, включающий правильное питание, режим тренировок и восстановление.</p>
+      <h3>1. Питание — это 70% успеха</h3>
+      <p>Чтобы расти, вам нужен профицит калорий (вы едите больше, чем тратите). Но это не значит, что можно есть всё подряд. Вам нужен качественный белок (мясо, рыба, яйца, творог) и сложные углеводы (крупы, овощи).</p>
+      <h3>2. Базовые упражнения</h3>
+      <p>Забудьте про изоляцию (сгибания на бицепс) на первых порах. Делайте базу: приседания, жим лежа, становая тяга, подтягивания. Они дают максимальный гормональный отклик для роста.</p>
+      <h3>3. Прогрессия нагрузок</h3>
+      <p>Мышцы растут только тогда, когда вы даете им нагрузку больше, чем в прошлый раз. Постепенно увеличивайте рабочий вес или количество повторений.</p>
+      <h3>4. Восстановление и сон</h3>
+      <p>Мышцы растут не в зале, а во время отдыха. Спите не менее 8 часов и делайте 2-3 дня отдыха в неделю.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать норму БЖУ для набора массы</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-6')">Почему болит все тело после тренировки</a></li>
+        <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТАТЬЯ 5 -->
+  <div id="page-article-5" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Сколько сахара можно есть в день без вреда для здоровья</h2>
+      <p>Всемирная организация здравоохранения (ВОЗ) настоятельно рекомендует сократить потребление добавленного сахара до 10% от общего суточного калоража, а лучше — до 5%.</p>
+      <h3>Что это значит в граммах?</h3>
+      <p>Для взрослого человека с нормой 2000 ккал: 5% — это примерно <strong>25 граммов (6 чайных ложек)</strong> добавленного сахара в день. 10% — это 50 граммов.</p>
+      <h3>Где скрывается сахар?</h3>
+      <p>Вы можете не есть конфеты и торты, но все равно перебирать норму. Сахар есть в:</p>
+      <ul>
+        <li>Соусах (кетчуп, барбекю).</li>
+        <li>Обезжиренных йогуртах (его добавляют для вкуса).</li>
+        <li>Хлопьях и мюсли на завтрак.</li>
+        <li>Соках и смузи.</li>
+      </ul>
+      <h3>Чем заменить?</h3>
+      <p>Замените сладкие перекусы на фрукты, орехи или ягоды. Пейте воду или чай без сахара.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму калорий</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-1')">Сколько калорий нужно в день, чтобы похудеть?</a></li>
+        <li><a onclick="showPage('article-8')">Вреден ли кофе и сколько его можно пить</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТАТЬЯ 6 -->
+  <div id="page-article-6" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Почему болит все тело после тренировки и что делать</h2>
+      <p>Каждый новичок сталкивается с этим: после первой серьезной тренировки на следующий день невозможно встать с кровати. Это состояние называется <strong>крепатура</strong> (или отсроченная мышечная боль).</p>
+      <h3>Это нормально?</h3>
+      <p>Да, это нормально. Микротравмы мышечных волокон — это часть процесса их роста и адаптации. Боль обычно достигает пика через 24–48 часов после тренировки.</p>
+      <h3>Что делать, чтобы облегчить боль?</h3>
+      <ul>
+        <li><strong>Активное восстановление:</strong> легкая прогулка или растяжка улучшают кровоток.</li>
+        <li><strong>Тепло:</strong> теплая ванна или душ помогают расслабить мышцы.</li>
+        <li><strong>Вода и белок:</strong> пейте больше воды и ешьте достаточно белка для восстановления.</li>
+      </ul>
+      <h3>Когда бить тревогу?</h3>
+      <p>Если боль острая, резкая, или если моча стала темного цвета — немедленно обратитесь к врачу. Это может быть признаком рабдомиолиза.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('article-4')">Как набрать мышечную массу новичку</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-7')">Как начать бегать с нуля: план для новичков</a></li>
+        <li><a onclick="showPage('article-3')">Сколько воды нужно пить в день</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТАТЬЯ 7 -->
+  <div id="page-article-7" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как начать бегать с нуля: план для новичков</h2>
+      <p>Бег — один из самых доступных видов кардио. Но начать бегать непросто: большинство людей бросают это дело из-за ошибок на старте.</p>
+      <h3>Главные правила:</h3>
+      <ul>
+        <li><strong>Не начинайте с быстрого темпа.</strong> Бегите медленно, чтобы вы могли дышать носом и говорить.</li>
+        <li><strong>Интервальный бег.</strong> Чередуйте бег с ходьбой (например, 2 минуты бега, 1 минута ходьбы).</li>
+        <li><strong>Правильная обувь.</strong> Кроссовки для бега — это не роскошь, а необходимость для здоровья коленей.</li>
+      </ul>
+      <h3>План на первую неделю:</h3>
+      <table>
+        <tr><th>День</th><th>Тренировка</th></tr>
+        <tr><td>Пн</td><td>3 мин бег / 2 мин ходьба (4 повтора)</td></tr>
+        <tr><td>Ср</td><td>3 мин бег / 2 мин ходьба (4 повтора)</td></tr>
+        <tr><td>Сб</td><td>4 мин бег / 2 мин ходьба (3 повтора)</td></tr>
+      </table>
+      <p>Главное — регулярность, а не скорость. Не гонитесь за рекордами!</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать норму воды для бега</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-6')">Почему болит все тело после тренировки</a></li>
+        <li><a onclick="showPage('article-3')">Сколько воды нужно пить в день</a></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- СТАТЬЯ 8 -->
+  <div id="page-article-8" class="page-content">
+    <a class="btn-back" onclick="showPage('articles')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Вреден ли кофе и сколько его можно пить</h2>
+      <p>Кофе — один из самых спорных напитков. Одни говорят, что он продлевает жизнь, другие — что разрушает сердце.</p>
+      <h3>Плюсы кофе</h3>
+      <p>Кофе содержит антиоксиданты, которые помогают бороться со свободными радикалами. Умеренное потребление кофеина повышает работоспособность и улучшает концентрацию.</p>
+      <h3>Минусы и ограничения</h3>
+      <p>Избыток кофеина (более 400 мг в день, это примерно 4 чашки) может вызывать:</p>
+      <ul>
+        <li>Бессонницу.</li>
+        <li>Повышение тревожности.</li>
+        <li>Повышенное давление.</li>
+        <li>Проблемы с ЖКТ.</li>
+      </ul>
+      <h3>Как пить кофе правильно?</h3>
+      <p>Не пейте кофе на голодный желудок (стимулирует выработку кислоты). Не добавляйте в него много сахара и сиропов (это сводит на нет всю пользу). Лучше всего пить черный кофе или с небольшим количеством молока.</p>
+      <p style="margin-top: 30px; text-align: center;"><button class="btn-primary" onclick="showPage('calc')">Рассчитать свою норму воды</button></p>
+      <div class="read-more"><h3>Читайте также:</h3><ul>
+        <li><a onclick="showPage('article-5')">Сколько сахара можно есть в день</a></li>
+        <li><a onclick="showPage('article-2')">Почему вы не худеете? 5 скрытых причин</a></li>
+      </ul></div>
     </div>
   </div>
 
@@ -453,7 +506,7 @@ function showPage(pageId) {
   document.getElementById('page-' + pageId).classList.add('active-page');
   
   // Подсветка меню
-  if(pageId === 'article-1' || pageId === 'article-2' || pageId === 'article-3') {
+  if(pageId.startsWith('article-')) {
     document.getElementById('link-articles').classList.add('active');
   } else if(document.getElementById('link-' + pageId)) {
     document.getElementById('link-' + pageId).classList.add('active');
@@ -536,4 +589,4 @@ function toggleTheme() {
 </script>
 
 </body>
-</html>
+</html> 
