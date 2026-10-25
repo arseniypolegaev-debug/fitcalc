@@ -7,7 +7,7 @@
 <meta name="description" content="Бесплатные фитнес-калькуляторы и полезные статьи о здоровье, питании и тренировках. Рассчитайте калории, БЖУ, норму воды и идеальный вес.">
 <style>
   /* --- 4 ТЕМЫ --- */
-  :root { /* Светлая (по умолчанию) */
+  :root {
     --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0; --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc;
     --text-color: #1e293b; --text-muted: #475569; --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8);
     --input-bg: #ffffff; --input-border: #cbd5e1; --btn-bg: #2563eb; --btn-hover: #1d4ed8; --nav-bg: rgba(255, 255, 255, 0.95);
@@ -155,7 +155,7 @@
   <div class="nav-links">
     <a class="nav-link active" onclick="showPage('calc')" id="link-calc">Калькуляторы</a>
     <a href="articles.html">Статьи</a>
-    <a href="motivation.html">Мотивация</a> <!-- НОВАЯ КНОПКА -->
+    <a href="motivation.html">Мотивация</a>
     <a class="nav-link" onclick="showPage('about')" id="link-about">О сайте</a>
     <a class="nav-link" onclick="showPage('privacy')" id="link-privacy">Политика</a>
   </div>
@@ -444,6 +444,7 @@ function toggleFaq(button) {
   button.nextElementSibling.classList.toggle('open');
 }
 
+// --- СМЕНА ТЕМ ---
 let currentTheme = 0;
 const themes = ['', 'theme-dark', 'theme-light-blue', 'theme-grey-blue'];
 const themeIcons = ['☀️', '🌙', '💧', '☁️'];
@@ -455,6 +456,7 @@ function cycleTheme(btn) {
   btn.textContent = themeIcons[currentTheme];
 }
 
+// Авто-тема при загрузке
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
   document.body.classList.add('theme-dark');
   document.getElementById('themeBtn').textContent = '🌙';
