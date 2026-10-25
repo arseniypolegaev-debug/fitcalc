@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Статьи | FitCalc</title>
+<style>
+  /* --- ПЕРЕМЕННЫЕ ДЛЯ ТЕМ --- */
+  :root {
+    --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0;
+    --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc;
+    --text-color: #1e293b; --text-muted: #475569;
+    --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8);
+    --input-bg: #ffffff; --input-border: #cbd5e1;
+    --btn-bg: #2563eb; --btn-hover: #1d4ed8; --btn-text: #ffffff;
+    --nav-bg: rgba(255, 255, 255, 0.95);
+  }
+
+  body.dark-theme {
+    --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b;
+    --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827;
+    --text-color: #f8fafc; --text-muted: #94a3b8;
+    --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1);
+    --input-bg: #0f172a; --input-border: #334155;
+    --btn-bg: #3b82f6; --btn-hover: #2563eb;
+    --nav-bg: rgba(15, 23, 42, 0.95);
+  }
+
+  /* --- БАЗОВЫЕ СТИЛИ --- */
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0 0 20px 0; color: var(--text-color); line-height: 1.6; transition: color 0.4s ease; background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4)); background-size: 400% 400%; animation: gradientBG 25s ease infinite; min-height: 100vh; }
+  @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+  /* --- НАВИГАЦИЯ --- */
+  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+  .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; cursor: pointer; letter-spacing: -0.5px; }
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; }
+  .nav-links a:hover, .nav-links a.active { background: var(--btn-bg); color: #fff; }
+  .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 14px; transition: all 0.3s; }
+  .theme-toggle:hover { background: var(--input-border); }
+
+  /* --- КОНТЕЙНЕР --- */
+  .container { max-width: 800px; margin: 20px auto; padding: 0 20px; position: relative; z-index: 1; }
+
+  /* --- КАРТОЧКИ --- */
+  .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); margin-bottom: 24px; transition: all 0.4s ease; }
+  h2 { font-size: 22px; margin-top: 0; text-align: left; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; display: flex; align-items: center; gap: 10px; }
+  h3 { font-size: 18px; color: var(--text-color); margin-top: 20px; margin-bottom: 10px; }
+
+  /* --- СТИЛИ ДЛЯ СТАТЕЙ --- */
+  .article-card { cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; padding: 15px; border: 1px solid var(--card-border); border-radius: 12px; }
+  .article-card:hover { transform: translateY(-2px); border-color: var(--btn-bg); background: var(--input-bg); }
+  .article-card h3 { margin-top: 0; color: var(--btn-bg); border-bottom: none; margin-bottom: 5px; }
+  .article-card p { color: var(--text-muted); font-size: 15px; margin: 0; }
+  
+  .article-content p { margin-bottom: 15px; color: var(--text-muted); font-size: 16px; }
+  .article-content ul { color: var(--text-muted); margin-bottom: 20px; padding-left: 20px; }
+  .article-content li { margin-bottom: 8px; }
+  
+  .btn-back { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none; }
+  .btn-back:hover { background: var(--input-border); }
+
+  /* --- ПОДВАЛ --- */
+  footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; font-weight: 500; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .page-content { display: none; animation: fadeIn 0.5s ease-in-out; }
+  .page-content.active-page { display: block; }
+
+  @media (max-width: 600px) {
+    .navbar { flex-direction: column; gap: 12px; }
+    .nav-links { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<!-- НАВИГАЦИЯ -->
+<nav class="navbar">
+  <a class="nav-logo" onclick="window.location.href='index.html'">FitCalc</a>
+  <div class="nav-links">
+    <a onclick="window.location.href='index.html'">Калькуляторы</a>
+    <a class="active" onclick="showPage('articles-list')">Статьи</a>
+    <a onclick="window.location.href='index.html'">О сайте</a>
+    <a onclick="window.location.href='index.html'">Политика</a>
+  </div>
+  <button class="theme-toggle" onclick="toggleTheme()">🌓 Тема</button>
+</nav>
+
+<div class="container">
+  
+  <!-- СПИСОК НОВЫХ СТАТЕЙ -->
+  <div id="page-articles-list" class="page-content active-page">
+    <div class="card">
+      <h2>📚 Статьи (Часть 2)</h2>
+      
+      <div class="article-card" onclick="showPage('a1')"><h3>Сколько шагов в день нужно проходить для здоровья</h3><p>10 000 шагов — это миф? Узнайте реальную норму для сердца и долголетия.</p></div>
+      <div class="article-card" onclick="showPage('a2')"><h3>Как ускорить метаболизм: 7 работающих способов</h3><p>Почему у одних получается есть всё и не толстеть, а другим нет? Разбираем метаболизм.</p></div>
+      <div class="article-card" onclick="showPage('a3')"><h3>Правильное питание для начинающих: с чего начать</h3><p>Пошаговая инструкция, как перейти на ПП без стресса и срывов.</p></div>
+      <div class="article-card" onclick="showPage('a4')"><h3>Почему после еды хочется спать (и как с этим бороться)</h3><p>Сонливость после обеда — это нормально? Разбираем причины и решения.</p></div>
+      <div class="article-card" onclick="showPage('a5')"><h3>Плюсы и минусы интервального голодания (16/8)</h3><p>Стоит ли пробовать? Разбираем научные данные о пользе и вреде голодания.</p></div>
+      <div class="article-card" onclick="showPage('a6')"><h3>Как тренироваться дома без оборудования</h3><p>Эффективная тренировка в домашних условиях с собственным весом.</p></div>
+      <div class="article-card" onclick="showPage('a7')"><h3>Что есть до и после тренировки</h3><p>Правильное топливо для мышц: что съесть за час до зала и через час после.</p></div>
+      <div class="article-card" onclick="showPage('a8')"><h3>Вред сидячего образа жизни и как его компенсировать</h3><p>Сидячая работа убивает? Узнайте, как спасти спину и сердце.</p></div>
+      <div class="article-card" onclick="showPage('a9')"><h3>Головная боль: причины и когда идти к врачу</h3><p>Мигрень, тензионная боль или что-то серьезнее? Как отличить и что делать.</p></div>
+      <div class="article-card" onclick="showPage('a10')"><h3>Как побороть лень и начать заниматься спортом</h3><p>Мотивация — это миф. Узнайте, как выработать привычку к тренировкам.</p></div>
+      <div class="article-card" onclick="showPage('a11')"><h3>Вся правда о протеиновых коктейлях: нужны ли они</h3><p>Можно ли набрать массу без протеина? Разбираем мифы о спортпите.</p></div>
+      <div class="article-card" onclick="showPage('a12')"><h3>Как правильно спать: гигиена сна для восстановления</h3><p>Сон — это лучшее лекарство. Как спать, чтобы просыпаться бодрым.</p></div>
+      <div class="article-card" onclick="showPage('a13')"><h3>Растяжка: зачем она нужна и когда ее делать</h3><p>До или после тренировки? Как не порвать связки и улучшить гибкость.</p></div>
+      <div class="article-card" onclick="showPage('a14')"><h3>Что такое «углеводное окно» и существует ли оно</h3><p>Нужно ли бежать за шоколадкой сразу после тренировки? Узнайте правду.</p></div>
+      <div class="article-card" onclick="showPage('a15')"><h3>Как сохранить мотивацию в фитнесе надолго</h3><p>Почему люди бросают зал через месяц и как войти в 1% тех, кто остается.</p></div>
+
+    </div>
+  </div>
+
+  <!-- СТАТЬИ -->
+  <div id="page-a1" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Сколько шагов в день нужно проходить для здоровья</h2>
+      <p>Цифра «10 000 шагов» — это не медицинская норма, а маркетинговый ход, придуманный в Японии в 1960-х годах для продажи шагомеров.</p>
+      <h3>Какая норма на самом деле?</h3>
+      <p>Современные исследования показывают, что польза для здоровья начинается уже с **4000–5000 шагов в день**. Риск смертности снижается на 15% при ходьбе 4000 шагов по сравнению с 2700 шагами.</p>
+      <h3>Нужно ли стремиться к 10 000?</h3>
+      <p>Если вы можете, стремитесь. Но для большинства людей достаточно **7000–8000 шагов**. Это уже дает максимальный эффект для снижения риска сердечно-сосудистых заболеваний.</p>
+      <h3>Как добавить шаги в жизнь?</h3>
+      <ul>
+        <li>Выходите на одну остановку раньше.</li>
+        <li>Паркуйтесь подальше от входа.</li>
+        <li>Гуляйте по телефону вместо того, чтобы сидеть.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="page-a2" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как ускорить метаболизм: 7 работающих способов</h2>
+      <p>Метаболизм — это скорость, с которой ваш организм сжигает калории в состоянии покоя. У одних он быстрый, у других — медленный.</p>
+      <h3>1. Наращивайте мышцы</h3>
+      <p>Мышцы сжигают больше калорий, чем жир, даже когда вы отдыхаете. Силовые тренировки — ключ к ускорению метаболизма.</p>
+      <h3>2. Ешьте больше белка</h3>
+      <p>Переваривание белка требует больше энергии, чем переваривание жиров или углеводов (до 30% калорий сгорает при переваривании).</p>
+      <h3>3. Пейте холодную воду</h3>
+      <p>Организм тратит энергию на согрев воды. Это мелочь, но она работает в сумме с другими факторами.</p>
+      <h3>4. Не голодайте</h3>
+      <p>Жесткие диеты замедляют метаболизм, так как организм переходит в режим экономии энергии.</p>
+      <h3>5. Высыпайтесь</h3>
+      <p>Недосып нарушает гормональный фон и замедляет обмен веществ.</p>
+    </div>
+  </div>
+
+  <div id="page-a3" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Правильное питание для начинающих: с чего начать</h2>
+      <p>Переход на правильное питание (ПП) не должен быть стрессом. Не нужно сразу выбрасывать всю еду из холодильника.</p>
+      <h3>Шаг 1: Начните с воды</h3>
+      <p>Пейте стакан воды утром и за 30 минут до еды. Это улучшит пищеварение.</p>
+      <h3>Шаг 2: Уберите жидкие калории</h3>
+      <p>Сладкая газировка, соки и кофе с сиропами — главные враги. Замените их на воду и чай.</p>
+      <h3>Шаг 3: Добавьте овощи</h3>
+      <p>Половина вашей тарелки должна быть из овощей. Они дают объем, витамины и клетчатку.</p>
+      <h3>Шаг 4: Ешьте медленно</h3>
+      <p>Мозгу нужно 20 минут, чтобы понять, что вы наелись. Жуйте тщательно.</p>
+    </div>
+  </div>
+
+  <div id="page-a4" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Почему после еды хочется спать (и как с этим бороться)</h2>
+      <p>Состояние, когда после плотного обеда клонит в сон, называется постпрандиальной сонливостью. Это нормальная реакция организма.</p>
+      <h3>Почему это происходит?</h3>
+      <p>После приема пищи, особенно богатой углеводами, уровень сахара в крови повышается. Организм вырабатывает инсулин, а также увеличивается выработка серотонина и мелатонина (гормонов сна).</p>
+      <h3>Как бороться?</h3>
+      <ul>
+        <li>Не переедайте.</li>
+        <li>Ешьте меньше быстрых углеводов (сладостей, белого хлеба).</li>
+        <li>Пейте достаточно воды.</li>
+        <li>Выйдите на короткую прогулку после еды.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="page-a5" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Плюсы и минусы интервального голодания (16/8)</h2>
+      <p>Схема 16/8 означает, что вы не едите 16 часов (включая сон) и едите в течение 8 часов (например, с 12:00 до 20:00).</p>
+      <h3>Плюсы</h3>
+      <ul>
+        <li>Помогает контролировать калории (сложно переесть за 8 часов).</li>
+        <li>Улучшает чувствительность к инсулину.</li>
+        <li>Упрощает режим (не нужно думать о завтраке).</li>
+      </ul>
+      <h3>Минусы</h3>
+      <ul>
+        <li>В период адаптации возможна головная боль и раздражительность.</li>
+        <li>Не подходит людям с гастритом или проблемами с желчным пузырем.</li>
+        <li>Может привести к перееданию в разрешенные 8 часов.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="page-a6" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как тренироваться дома без оборудования</h2>
+      <p>Для эффективной тренировки не нужен зал. Собственный вес тела — это отличный тренажер.</p>
+      <h3>Круговая тренировка (выполнять 3 круга):</h3>
+      <ul>
+        <li><strong>Приседания:</strong> 15-20 раз (работают ноги и ягодицы).</li>
+        <li><strong>Отжимания от пола:</strong> 10-15 раз (грудь, трицепс).</li>
+        <li><strong>Выпады на месте:</strong> 10 на каждую ногу.</li>
+        <li><strong>Планка:</strong> 45-60 секунд (пресс, кор).</li>
+        <li><strong>Ягодичный мостик:</strong> 15 раз.</li>
+      </ul>
+      <p>Отдыхайте по 1-2 минуты между кругами. Такая тренировка займет 20-30 минут и отлично прокачает все тело.</p>
+    </div>
+  </div>
+
+  <div id="page-a7" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Что есть до и после тренировки</h2>
+      <p>Правильное питание до и после тренировки значительно влияет на результат и восстановление.</p>
+      <h3>До тренировки (за 1-1.5 часа)</h3>
+      <p>Вам нужны сложные углеводы для энергии и немного белка. Например: гречка с курицей, овсянка с яйцом, или тост из цельнозернового хлеба с творогом.</p>
+      <h3>После тренировки (в течение 1-2 часов)</h3>
+      <p>Организму нужен белок для восстановления мышц и углеводы для восполнения энергии. Например: рыба с рисом, протеиновый коктейль с бананом, или куриная грудка с картофелем.</p>
+      <h3>Что не есть?</h3>
+      <p>Избегайте жирной и тяжелой пищи перед тренировкой, так как она долго переваривается и может вызвать дискомфорт.</p>
+    </div>
+  </div>
+
+  <div id="page-a8" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Вред сидячего образа жизни и как его компенсировать</h2>
+      <p>Сидячая работа повышает риск сердечно-сосудистых заболеваний, диабета и проблем с позвоночником.</p>
+      <h3>Чем опасен сидячий образ жизни?</h3>
+      <ul>
+        <li>Замедление метаболизма.</li>
+        <li>Атрофия мышц ягодиц и спины.</li>
+        <li>Ухудшение кровообращения.</li>
+        <li>Боли в шее и пояснице.</li>
+      </ul>
+      <h3>Как компенсировать?</h3>
+      <p>Врачи советуют делать перерывы каждый час. Встаньте, пройдитесь, сделайте разминку. Также поможет эргономичное кресло и правильная высота монитора.</p>
+    </div>
+  </div>
+
+  <div id="page-a9" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Головная боль: причины и когда идти к врачу</h2>
+      <p>Головная боль — один из самых частых симптомов. Важно различать виды боли.</p>
+      <h3>Типы головной боли</h3>
+      <ul>
+        <li><strong>Тензионная:</strong> давящая боль с двух сторон, как будто голова в тисках. Часто из-за стресса и сидячей работы.</li>
+        <li><strong>Мигрень:</strong> пульсирующая боль, часто с одной стороны, сопровождается тошнотой и светобоязнью.</li>
+        <li><strong>Кластерная:</strong> острая боль вокруг одного глаза.</li>
+      </ul>
+      <h3>Когда идти к врачу?</h3>
+      <p>Срочно обратитесь к врачу, если боль появилась внезапно и невыносимо («удар громом»), сопровождается потерей сознания, онемением конечностей или не спадает несколько дней.</p>
+    </div>
+  </div>
+
+  <div id="page-a10" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как побороть лень и начать заниматься спортом</h2>
+      <p>Лень — это не порок, а защитный механизм. Мозг экономит энергию. Чтобы начать заниматься, нужно обмануть мозг.</p>
+      <h3>Правило 5 минут</h3>
+      <p>Скажите себе: «Я позанимаюсь всего 5 минут». Начните тренировку. Чаще всего вы не остановитесь через 5 минут, а продолжите.</p>
+      <h3>Сделайте это привычкой</h3>
+      <p>Тренируйтесь в одно и то же время. Через 21 день это станет автоматическим действием, как чистка зубов.</p>
+      <h3>Найдите удовольствие</h3>
+      <p>Если вам не нравится бегать, не бегайте. Танцы, плавание, бокс — выберите то, что приносит радость.</p>
+    </div>
+  </div>
+
+  <div id="page-a11" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Вся правда о протеиновых коктейлях: нужны ли они</h2>
+      <p>Протеин — это не «химия» и не стероиды. Это просто концентрированный белок, получаемый из молока (сыворотка) или растений.</p>
+      <h3>Нужны ли они?</h3>
+      <p>Если вы набираете норму белка из обычной еды (мясо, рыба, яйца, творог), то протеин не обязателен. Однако он удобен, если:
+      <ul>
+        <li>У вас нет времени готовить.</li>
+        <li>Вы не можете съесть нужное количество мяса.</li>
+        <li>Вам нужно быстро перекусить после тренировки.</li>
+      </ul>
+      </p>
+      <h3>Какой выбрать?</h3>
+      <p>Сывороточный протеин (Whey) — самый популярный и быстроусваиваемый. Начинайте с классического концентрата.</p>
+    </div>
+  </div>
+
+  <div id="page-a12" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как правильно спать: гигиена сна для восстановления</h2>
+      <p>Сон — это время, когда организм восстанавливается и вырабатывает гормон роста. Без качественного сна прогресса в фитнесе не будет.</p>
+      <h3>Правила здорового сна:</h3>
+      <ul>
+        <li><strong>Режим:</strong> ложитесь и вставайте в одно и то же время.</li>
+        <li><strong>Темнота:</strong> в спальне должно быть максимально темно (используйте блэкаут-шторы).</li>
+        <li><strong>Прохлада:</strong> оптимальная температура для сна — 18-20 градусов.</li>
+        <li><strong>Без гаджетов:</strong> синий свет экрана подавляет мелатонин. Уберите телефон за час до сна.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="page-a13" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Растяжка: зачем она нужна и когда ее делать</h2>
+      <p>Растяжка улучшает гибкость, снижает риск травм и помогает мышцам быстрее восстанавливаться.</p>
+      <h3>До или после тренировки?</h3>
+      <p><strong>Динамическая растяжка</strong> (махи руками, ногами) — отлично подходит для разогрева ДО тренировки. <strong>Статическая растяжка</strong> (замирание в позе на 30 секунд) — лучше делать ПОСЛЕ тренировки для расслабления мышц.</p>
+      <h3>Основные правила:</h3>
+      <ul>
+        <li>Не растягивайтесь до боли.</li>
+        <li>Дышите ровно.</li>
+        <li>Не делайте резких рывков.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="page-a14" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Что такое «углеводное окно» и существует ли оно</h2>
+      <p>Считается, что в течение 30-40 минут после тренировки организм максимально быстро усваивает углеводы и белок для восстановления.</p>
+      <h3>Правда или миф?</h3>
+      <p>Углеводное окно действительно существует, но оно не закрывается строго через 30 минут. В течение нескольких часов после тренировки мышцы остаются восприимчивыми к питательным веществам.</p>
+      <h3>Что есть?</h3>
+      <p>Если вы не профессиональный спортсмен, вам не нужно бежать за шоколадкой. Просто съешьте полноценный прием пищи в течение 1-2 часов после тренировки (белок + сложные углеводы).</p>
+    </div>
+  </div>
+
+  <div id="page-a15" class="page-content">
+    <a class="btn-back" onclick="showPage('articles-list')">← Назад к статьям</a>
+    <div class="card article-content">
+      <h2>Как сохранить мотивацию в фитнесе надолго</h2>
+      <p>Мотивация — это миф. Она быстро угасает. Настоящий секрет успеха — это дисциплина и привычка.</p>
+      <h3>Советы для долгосрочного прогресса:</h3>
+      <ul>
+        <li><strong>Ставьте реалистичные цели:</strong> не «похудеть на 20 кг за месяц», а «тренироваться 3 раза в неделю».</li>
+        <li><strong>Отслеживайте прогресс:</strong> фотографии, замеры, рабочие веса — это топливо для мотивации.</li>
+        <li><strong>Не наказывайте себя:</strong> пропустили тренировку — не страшно. Просто идите на следующую.</li>
+        <li><strong>Найдите компанию:</strong> тренироваться с другом веселее и сложнее бросить.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ПОДВАЛ -->
+  <footer>
+    &copy; 2026 FitCalc. Все права защищены.
+  </footer>
+
+</div>
+
+<script>
+function showPage(pageId) {
+  document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active-page'));
+  document.getElementById('page-' + pageId).classList.add('active-page');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function toggleTheme() { document.body.classList.toggle('dark-theme'); }
+</script>
+
+</body>
+</html>
