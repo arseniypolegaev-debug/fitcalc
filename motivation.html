@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Статьи | FitCalc</title>
+<title>Мотивация | FitCalc</title>
 <style>
   :root { --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0; --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc; --text-color: #1e293b; --text-muted: #475569; --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8); --input-bg: #ffffff; --input-border: #cbd5e1; --btn-bg: #2563eb; --btn-hover: #1d4ed8; --nav-bg: rgba(255, 255, 255, 0.95); }
   body.theme-dark { --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b; --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827; --text-color: #f8fafc; --text-muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1); --input-bg: #0f172a; --input-border: #334155; --btn-bg: #3b82f6; --btn-hover: #2563eb; --nav-bg: rgba(15, 23, 42, 0.95); }
@@ -15,211 +15,119 @@
 
   .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
   .nav-left { display: flex; flex-direction: column; gap: 5px; }
-  .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; cursor: pointer; letter-spacing: -0.5px; }
-  .lang-switch { font-size: 12px; font-weight: bold; color: var(--text-muted); cursor: pointer; display: flex; gap: 5px; }
-  .lang-switch span:hover { color: var(--btn-bg); }
-  .lang-switch .active { color: var(--btn-bg); text-decoration: underline; }
+  .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; }
   .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
-  .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; cursor: pointer; }
+  .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s; cursor: pointer; }
   .nav-links a:hover, .nav-links a.active { background: var(--btn-bg); color: #fff; }
-  .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 16px; transition: all 0.3s; }
+  .theme-toggle { background: transparent; border: 1px solid var(--input-border); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 16px; }
   .theme-toggle:hover { background: var(--input-border); }
 
-  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; transition: all 0.3s; }
+  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; }
   .search-container.hidden { display: none; }
-  .search-input { width: 100%; max-width: 600px; padding: 10px 15px; border: 1px solid var(--input-border); border-radius: 20px; font-size: 15px; background: var(--input-bg); color: var(--text-color); transition: all 0.3s ease; }
-  .search-input:focus { outline: none; border-color: var(--btn-bg); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+  .search-input { width: 100%; max-width: 600px; padding: 10px 15px; border: 1px solid var(--input-border); border-radius: 20px; font-size: 15px; background: var(--input-bg); color: var(--text-color); }
 
-  .container { max-width: 800px; margin: 20px auto; padding: 0 20px; position: relative; z-index: 1; }
-  .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); margin-bottom: 24px; transition: all 0.4s ease; }
-  h2 { font-size: 22px; margin-top: 0; text-align: left; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; display: flex; align-items: center; gap: 10px; }
-  h3 { font-size: 18px; color: var(--text-color); margin-top: 20px; margin-bottom: 10px; }
+  .container { max-width: 800px; margin: 20px auto; padding: 0 20px; }
+  .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); margin-bottom: 24px; }
+  h2 { font-size: 22px; margin-top: 0; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; }
 
-  .article-card { cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; padding: 15px; border: 1px solid var(--card-border); border-radius: 12px; }
-  .article-card:hover { transform: translateY(-2px); border-color: var(--btn-bg); background: var(--input-bg); }
-  .article-card h3 { margin-top: 0; color: var(--btn-bg); border-bottom: none; margin-bottom: 5px; }
-  .article-card p { color: var(--text-muted); font-size: 15px; margin: 0; }
+  .motivation-card { cursor: pointer; transition: transform 0.2s; margin-bottom: 15px; padding: 15px; border: 1px solid var(--card-border); border-radius: 12px; display: flex; gap: 15px; align-items: center; }
+  .motivation-card:hover { transform: translateY(-2px); border-color: var(--btn-bg); background: var(--input-bg); }
+  .motivation-card img { width: 60px; height: 60px; border-radius: 50%; object-fit: cover; border: 2px solid var(--btn-bg); }
+  .motivation-card-info h3 { margin: 0 0 5px 0; color: var(--btn-bg); font-size: 18px; }
+  .motivation-card-info p { margin: 0; color: var(--text-muted); font-size: 14px; }
+
+  .motivation-content img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; float: left; margin-right: 20px; margin-bottom: 10px; border: 3px solid var(--btn-bg); }
+  .motivation-content p { margin-bottom: 15px; color: var(--text-muted); font-size: 16px; }
+  .motivation-content blockquote { font-size: 20px; font-style: italic; font-weight: 600; color: var(--btn-bg); border-left: 4px solid var(--btn-bg); padding-left: 15px; margin: 20px 0; background: var(--input-bg); padding: 15px; border-radius: 8px; }
   
-  .article-content p { margin-bottom: 15px; color: var(--text-muted); font-size: 16px; }
-  .article-content ul { color: var(--text-muted); margin-bottom: 20px; padding-left: 20px; }
-  .article-content li { margin-bottom: 8px; }
-  
-  .btn-back { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; text-decoration: none; transition: all 0.2s; }
+  .btn-back { display: inline-block; margin-bottom: 20px; padding: 8px 16px; background: var(--input-bg); border: 1px solid var(--input-border); border-radius: 8px; color: var(--text-color); font-weight: 600; cursor: pointer; }
   .btn-back:hover { background: var(--input-border); }
 
-  .read-more { margin-top: 30px; padding-top: 20px; border-top: 2px dashed var(--card-border); }
-  .read-more h3 { margin-top: 0; font-size: 18px; color: var(--text-color); }
+  .read-more { margin-top: 30px; padding-top: 20px; border-top: 2px dashed var(--card-border); clear: both; }
+  .read-more h3 { margin-top: 0; font-size: 18px; }
   .read-more ul { list-style: none; padding: 0; }
   .read-more li { margin-bottom: 10px; }
-  .read-more a { color: var(--btn-bg); text-decoration: none; font-weight: 600; cursor: pointer; transition: 0.2s; }
-  .read-more a:hover { text-decoration: underline; padding-left: 5px; }
+  .read-more a { color: var(--btn-bg); text-decoration: none; font-weight: 600; cursor: pointer; }
+  .read-more a:hover { text-decoration: underline; }
 
-  footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; font-weight: 500; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; }
   .page-content { display: none; animation: fadeIn 0.5s ease-in-out; }
   .page-content.active-page { display: block; }
-
-  #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border: none; outline: none; background-color: var(--btn-bg); color: white; cursor: pointer; padding: 15px; border-radius: 50%; font-size: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: background 0.3s; }
-  #scrollTopBtn:hover { background-color: var(--btn-hover); }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   @media (max-width: 600px) {
-    .navbar { flex-direction: column; gap: 12px; }
+    .navbar { flex-direction: column; }
     .nav-links { justify-content: center; }
+    .motivation-content img { float: none; display: block; margin: 0 auto 15px auto; }
   }
 </style>
 </head>
 <body>
 
 <nav class="navbar">
-  <div class="nav-left">
-    <a class="nav-logo" href="index.html">FitCalc</a>
-    <div class="lang-switch">
-      <span class="active" onclick="alert('Перевод в разработке')">RU</span> | <span onclick="alert('Перевод в разработке')">EN</span>
-    </div>
-  </div>
+  <div class="nav-left"><a class="nav-logo" href="index.html">FitCalc</a></div>
   <div class="nav-links">
     <a href="index.html">Калькуляторы</a>
-    <a class="active">Статьи</a>
-    <a href="motivation.html">Мотивация</a>
+    <a href="articles.html">Статьи</a>
+    <a class="active">Мотивация</a>
     <a href="index.html">О сайте</a>
     <a href="index.html">Политика</a>
   </div>
-  <button class="theme-toggle" id="themeBtn" onclick="cycleTheme(this)">☀️</button>
+  <button class="theme-toggle" onclick="cycleTheme(this)">☀️</button>
 </nav>
 
 <div class="search-container" id="mainSearch">
-  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по статьям..." oninput="filterContent()">
+  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по имени..." oninput="filterContent()">
 </div>
 
 <div class="container">
-  <div id="page-articles-list" class="page-content active-page">
+  <div id="page-list" class="page-content active-page">
     <div class="card">
-      <h2>📚 Полезные статьи</h2>
-      <div id="articles-list">
-        
-        <!-- СТАРЫЕ 15 -->
-        <div class="article-card searchable-item" data-title="сколько шагов в день" onclick="showPage('a1')"><h3>Сколько шагов в день нужно проходить для здоровья</h3><p>10 000 шагов — это миф? Узнайте реальную норму.</p></div>
-        <div class="article-card searchable-item" data-title="как ускорить метаболизм" onclick="showPage('a2')"><h3>Как ускорить метаболизм: 7 работающих способов</h3><p>Разбираем, как заставить тело сжигать больше калорий.</p></div>
-        <div class="article-card searchable-item" data-title="правильное питание для начинающих" onclick="showPage('a3')"><h3>Правильное питание для начинающих: с чего начать</h3><p>Пошаговая инструкция, как перейти на ПП без стресса.</p></div>
-        <div class="article-card searchable-item" data-title="почему после еды хочется спать" onclick="showPage('a4')"><h3>Почему после еды хочется спать</h3><p>Сонливость после обеда — это нормально? Разбираем причины.</p></div>
-        <div class="article-card searchable-item" data-title="интервальное голодание" onclick="showPage('a5')"><h3>Плюсы и минусы интервального голодания (16/8)</h3><p>Стоит ли пробовать? Разбираем научные данные.</p></div>
-        <div class="article-card searchable-item" data-title="как тренироваться дома" onclick="showPage('a6')"><h3>Как тренироваться дома без оборудования</h3><p>Эффективная тренировка с собственным весом.</p></div>
-        <div class="article-card searchable-item" data-title="что есть до и после тренировки" onclick="showPage('a7')"><h3>Что есть до и после тренировки</h3><p>Правильное топливо для мышц.</p></div>
-        <div class="article-card searchable-item" data-title="вред сидячего образа жизни" onclick="showPage('a8')"><h3>Вред сидячего образа жизни</h3><p>Как спасти спину и сердце, если вы работаете в офисе.</p></div>
-        <div class="article-card searchable-item" data-title="головная боль причины" onclick="showPage('a9')"><h3>Головная боль: причины и когда идти к врачу</h3><p>Мигрень или просто усталость?</p></div>
-        <div class="article-card searchable-item" data-title="как побороть лень" onclick="showPage('a10')"><h3>Как побороть лень и начать заниматься спортом</h3><p>Мотивация — это миф. Узнайте, как выработать привычку.</p></div>
-        <div class="article-card searchable-item" data-title="протеиновые коктейли" onclick="showPage('a11')"><h3>Вся правда о протеиновых коктейлях</h3><p>Можно ли набрать массу без протеина?</p></div>
-        <div class="article-card searchable-item" data-title="как правильно спать" onclick="showPage('a12')"><h3>Как правильно спать: гигиена сна</h3><p>Как спать, чтобы просыпаться бодрым.</p></div>
-        <div class="article-card searchable-item" data-title="растяжка" onclick="showPage('a13')"><h3>Растяжка: зачем она нужна и когда ее делать</h3><p>До или после тренировки?</p></div>
-        <div class="article-card searchable-item" data-title="углеводное окно" onclick="showPage('a14')"><h3>Что такое «углеводное окно»</h3><p>Нужно ли бежать за шоколадкой после тренировки?</p></div>
-        <div class="article-card searchable-item" data-title="как сохранить мотивацию" onclick="showPage('a15')"><h3>Как сохранить мотивацию в фитнесе надолго</h3><p>Почему люди бросают зал через месяц.</p></div>
-
-        <!-- НОВЫЕ 10 -->
-        <div class="article-card searchable-item" data-title="как сжечь жир на животе" onclick="showPage('a16')"><h3>Как быстро сжечь жир на животе</h3><p>Почему локальное жиросжигание — миф.</p></div>
-        <div class="article-card searchable-item" data-title="польза и вред кардио" onclick="showPage('a17')"><h3>Польза и вред кардиотренировок</h3><p>Сколько нужно кардио для здоровья сердца.</p></div>
-        <div class="article-card searchable-item" data-title="боль в спине" onclick="showPage('a18')"><h3>Как избавиться от боли в спине</h3><p>Простые упражнения и правила.</p></div>
-        <div class="article-card searchable-item" data-title="что такое креатин" onclick="showPage('a19')"><h3>Что такое креатин и нужен ли он вам</h3><p>Самый изученный спортсмен-добавка.</p></div>
-        <div class="article-card searchable-item" data-title="как выбрать спортзал" onclick="showPage('a20')"><h3>Как выбрать спортзал: 7 главных критериев</h3><p>На что смотреть, чтобы не бросить тренировки.</p></div>
-        <div class="article-card searchable-item" data-title="тренировки при простуде" onclick="showPage('a21')"><h3>Можно ли тренироваться при простуде</h3><p>Правило «выше шеи».</p></div>
-        <div class="article-card searchable-item" data-title="польза бани" onclick="showPage('a22')"><h3>Польза бани и сауны для спортсменов</h3><p>Как правильно париться для восстановления.</p></div>
-        <div class="article-card searchable-item" data-title="пульс для сжигания жира" onclick="showPage('a23')"><h3>Как считать пульс для сжигания жира</h3><p>Формула идеального пульса для похудения.</p></div>
-        <div class="article-card searchable-item" data-title="все о витамине д" onclick="showPage('a24')"><h3>Всё о витамине D: как не заболеть зимой</h3><p>Почему нам не хватает солнца.</p></div>
-        <div class="article-card searchable-item" data-title="как отказаться от сахара" onclick="showPage('a25')"><h3>Как отказаться от сахара за 21 день</h3><p>Пошаговый план без срывов.</p></div>
-        
-        <!-- ФИНАЛЬНЫЕ 10 -->
-        <div class="article-card searchable-item" data-title="польза овсянки" onclick="showPage('a26')"><h3>Чем полезна овсянка на завтрак</h3><p>Разбираем состав и влияние на холестерин.</p></div>
-        <div class="article-card searchable-item" data-title="как накачать плечи" onclick="showPage('a27')"><h3>Как накачать широкие плечи дома</h3><p>Лучшие упражнения с гантелями и без.</p></div>
-        <div class="article-card searchable-item" data-title="вред газировки" onclick="showPage('a28')"><h3>Что будет, если пить газировку каждый день</h3><p>Влияние сахара и газов на организм.</p></div>
-        <div class="article-card searchable-item" data-title="как избавиться от отеков" onclick="showPage('a29')"><h3>Как избавиться от отеков по утрам</h3><p>Причины задержки воды и как ее выгнать.</p></div>
-        <div class="article-card searchable-item" data-title="тренировка в домашних условиях" onclick="showPage('a30')"><h3>Как поддерживать форму без спортзала</h3><p>Бытовые лайфхаки для активности.</p></div>
-        <div class="article-card searchable-item" data-title="здоровый сон" onclick="showPage('a31')"><h3>Сколько часов нужно спать взрослому</h3><p>Развенчиваем мифы о сне.</p></div>
-        <div class="article-card searchable-item" data-title="еда перед сном" onclick="showPage('a32')"><h3>Можно ли есть перед сном</h3><p>Что съесть, чтобы не навредить фигуре.</p></div>
-        <div class="article-card searchable-item" data-title="как быстро взбодриться" onclick="showPage('a33')"><h3>Как быстро взбодриться без кофе</h3><p>Простые способы поднять энергию.</p></div>
-        <div class="article-card searchable-item" data-title="польза ходьбы" onclick="showPage('a34')"><h3>Польза ходьбы для похудения</h3><p>Сколько нужно ходить, чтобы сбросить вес.</p></div>
-        <div class="article-card searchable-item" data-title="вред диет" onclick="showPage('a35')"><h3>Почему строгие диеты не работают</h3><p>Психология срывов и как похудеть навсегда.</p></div>
-
+      <h2>🔥 Великие люди</h2>
+      <div id="motivations-list">
+        <div class="motivation-card searchable-item" data-title="арнольд шварценеггер" onclick="showPage('m1')"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=150&h=150&fit=crop" alt="Арнольд"><div class="motivation-card-info"><h3>Арнольд Шварценеггер</h3><p>Актер, бодибилдер</p></div></div>
+        <div class="motivation-card searchable-item" data-title="майк тайсон" onclick="showPage('m2')"><img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=150&h=150&fit=crop" alt="Тайсон"><div class="motivation-card-info"><h3>Майк Тайсон</h3><p>Боксер</p></div></div>
+        <div class="motivation-card searchable-item" data-title="криштиану роналду" onclick="showPage('m3')"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=150&h=150&fit=crop" alt="Роналду"><div class="motivation-card-info"><h3>Криштиану Роналду</h3><p>Футболист</p></div></div>
+        <div class="motivation-card searchable-item" data-title="брюс ли" onclick="showPage('m4')"><img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=150&h=150&fit=crop" alt="Брюс Ли"><div class="motivation-card-info"><h3>Брюс Ли</h3><p>Мастер боевых искусств</p></div></div>
+        <div class="motivation-card searchable-item" data-title="билл гейтс" onclick="showPage('m5')"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=150&h=150&fit=crop" alt="Гейтс"><div class="motivation-card-info"><h3>Билл Гейтс</h3><p>Основатель Microsoft</p></div></div>
+        <div class="motivation-card searchable-item" data-title="илон маск" onclick="showPage('m6')"><img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?w=150&h=150&fit=crop" alt="Маск"><div class="motivation-card-info"><h3>Илон Маск</h3><p>Основатель SpaceX</p></div></div>
+        <div class="motivation-card searchable-item" data-title="стив джобс" onclick="showPage('m7')"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=150&h=150&fit=crop" alt="Джобс"><div class="motivation-card-info"><h3>Стив Джобс</h3><p>Основатель Apple</p></div></div>
+        <div class="motivation-card searchable-item" data-title="мохаммед али" onclick="showPage('m8')"><img src="https://images.unsplash.com/photo-1549476464-37392f717541?w=150&h=150&fit=crop" alt="Али"><div class="motivation-card-info"><h3>Мохаммед Али</h3><p>Легенда бокса</p></div></div>
       </div>
     </div>
   </div>
 
-  <!-- СТАТЬИ (35 шт) -->
-  <div id="page-a1" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Сколько шагов в день нужно проходить для здоровья</h2><p>Цифра «10 000 шагов» — это маркетинговый ход. Современные исследования показывают, что польза начинается с 4000–5000 шагов, а 7000–8000 уже дают максимальный эффект.</p><div class="read-more" id="rec-a1"></div></div></div>
-  <div id="page-a2" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как ускорить метаболизм: 7 работающих способов</h2><p>1. Наращивайте мышцы. 2. Ешьте больше белка. 3. Пейте холодную воду. 4. Не голодайте жестко. 5. Высыпайтесь.</p><div class="read-more" id="rec-a2"></div></div></div>
-  <div id="page-a3" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Правильное питание для начинающих</h2><p>Начните с воды, уберите жидкие калории (соки, газировку), добавьте овощи на тарелку и ешьте медленно.</p><div class="read-more" id="rec-a3"></div></div></div>
-  <div id="page-a4" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Почему после еды хочется спать</h2><p>Это постпрандиальная сонливость. Из-за углеводов повышается сахар в крови. Решение: не переедать и гулять после еды.</p><div class="read-more" id="rec-a4"></div></div></div>
-  <div id="page-a5" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Плюсы и минусы интервального голодания (16/8)</h2><p>Плюсы: контроль калорий, чувствительность к инсулину. Минусы: риск головной боли, не подходит при гастрите.</p><div class="read-more" id="rec-a5"></div></div></div>
-  <div id="page-a6" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как тренироваться дома без оборудования</h2><p>Круговая тренировка: приседания, отжимания, выпады, планка. 3 круга по 20 минут — и вы в форме.</p><div class="read-more" id="rec-a6"></div></div></div>
-  <div id="page-a7" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Что есть до и после тренировки</h2><p>До: сложные углеводы и белок. После: белок для восстановления мышц и углеводы для энергии.</p><div class="read-more" id="rec-a7"></div></div></div>
-  <div id="page-a8" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Вред сидячего образа жизни</h2><p>Замедляется метаболизм, болят спина и шея. Делайте перерывы каждый час и вставайте.</p><div class="read-more" id="rec-a8"></div></div></div>
-  <div id="page-a9" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Головная боль: причины</h2><p>Тензионная (от стресса) или мигрень. Если боль резкая и невыносимая — срочно к врачу.</p><div class="read-more" id="rec-a9"></div></div></div>
-  <div id="page-a10" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как побороть лень</h2><p>Правило 5 минут: скажите себе позаниматься 5 минут, и вы не заметите, как втянетесь.</p><div class="read-more" id="rec-a10"></div></div></div>
-  <div id="page-a11" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Вся правда о протеиновых коктейлях</h2><p>Это просто концентрированный белок. Не «химия». Нужен, если не добираете белок из еды.</p><div class="read-more" id="rec-a11"></div></div></div>
-  <div id="page-a12" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как правильно спать</h2><p>Ложитесь в одно время, спите в темноте и прохладе (18-20 градусов). Уберите телефон за час до сна.</p><div class="read-more" id="rec-a12"></div></div></div>
-  <div id="page-a13" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Растяжка</h2><p>Динамическая — ДО тренировки, статическая — ПОСЛЕ. Не тяните мышцы до боли.</p><div class="read-more" id="rec-a13"></div></div></div>
-  <div id="page-a14" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Углеводное окно</h2><p>Оно есть, но не закрывается строго через 30 минут. Просто поешьте полноценно в течение 1-2 часов.</p><div class="read-more" id="rec-a14"></div></div></div>
-  <div id="page-a15" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как сохранить мотивацию</h2><p>Мотивация — миф. Работает дисциплина и реалистичные цели. Не ругайте себя за пропуски.</p><div class="read-more" id="rec-a15"></div></div></div>
-  
-  <div id="page-a16" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как быстро сжечь жир на животе</h2><p>Локальное жиросжигание невозможно. Нужен общий дефицит калорий, кардио и укрепление мышц кора.</p><div class="read-more" id="rec-a16"></div></div></div>
-  <div id="page-a17" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Польза и вред кардиотренировок</h2><p>Кардио тренирует сердце. Оптимально: 150 минут умеренного кардио в неделю.</p><div class="read-more" id="rec-a17"></div></div></div>
-  <div id="page-a18" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как избавиться от боли в спине</h2><p>Укрепляйте мышечный корсет (планка). Сидите ровно. И обязательно делайте разминку.</p><div class="read-more" id="rec-a18"></div></div></div>
-  <div id="page-a19" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Что такое креатин</h2><p>Это добавка, которая дает энергию мышцам. Одна из самых безопасных и изученных.</p><div class="read-more" id="rec-a19"></div></div></div>
-  <div id="page-a20" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как выбрать спортзал</h2><p>Смотрите на близость к дому, чистоте, наличию нужных тренажеров и квалификации тренеров.</p><div class="read-more" id="rec-a20"></div></div></div>
-  <div id="page-a21" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Можно ли тренироваться при простуде</h2><p>Если симптомы выше шеи — можно легко. Если ниже (температура) — категорически нельзя.</p><div class="read-more" id="rec-a21"></div></div></div>
-  <div id="page-a22" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Польза бани и сауны</h2><p>Баня расширяет сосуды и помогает мышцам восстановиться после тяжелых тренировок.</p><div class="read-more" id="rec-a22"></div></div></div>
-  <div id="page-a23" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как считать пульс для сжигания жира</h2><p>Формула: (220 - возраст) * 0.6-0.7. В этой зоне нужно тренироваться не менее 30 минут.</p><div class="read-more" id="rec-a23"></div></div></div>
-  <div id="page-a24" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Всё о витамине D</h2><p>Витамин D важен для костей и иммунитета. Сдайте анализ и проконсультируйтесь с врачом.</p><div class="read-more" id="rec-a24"></div></div></div>
-  <div id="page-a25" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как отказаться от сахара за 21 день</h2><p>Убирайте сахар постепенно. Заменяйте сладкое фруктами. Через 3 недели тяга пропадет.</p><div class="read-more" id="rec-a25"></div></div></div>
-
-  <!-- НОВЫЕ 10 (26-35) -->
-  <div id="page-a26" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Чем полезна овсянка на завтрак</h2><p>Овсянка содержит бета-глюкан, который снижает уровень холестерина. Она дает долгое чувство сытости и стабильную энергию.</p><div class="read-more" id="rec-a26"></div></div></div>
-  <div id="page-a27" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как накачать широкие плечи дома</h2><p>Лучшие упражнения: отжимания в стойке на руках (у стены), махи гантелями в стороны, тяга к подбородку.</p><div class="read-more" id="rec-a27"></div></div></div>
-  <div id="page-a28" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Что будет, если пить газировку каждый день</h2><p>Риск ожирения, диабета 2 типа и разрушение зубов. Сахар в жидком виде усваивается моментально.</p><div class="read-more" id="rec-a28"></div></div></div>
-  <div id="page-a29" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как избавиться от отеков по утрам</h2><p>Отеки — это задержка воды. Пейте больше чистой воды, ешьте меньше соли на ночь и высыпайтесь.</p><div class="read-more" id="rec-a29"></div></div></div>
-  <div id="page-a30" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как поддерживать форму без спортзала</h2><p>Больше ходите пешком, поднимайтесь по лестнице вместо лифта, делайте короткие 10-минутные разминки в течение дня.</p><div class="read-more" id="rec-a30"></div></div></div>
-  <div id="page-a31" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Сколько часов нужно спать взрослому</h2><p>Взрослому человеку нужно от 7 до 9 часов сна. Недосып ведет к набору веса и проблемам с сердцем.</p><div class="read-more" id="rec-a31"></div></div></div>
-  <div id="page-a32" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Можно ли есть перед сном</h2><p>Можно, если это легкий белок (творог) или овощи. Тяжелая жирная еда нарушит сон и пищеварение.</p><div class="read-more" id="rec-a32"></div></div></div>
-  <div id="page-a33" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Как быстро взбодриться без кофе</h2><p>Умывание холодной водой, короткая зарядка, стакан воды с лимоном и глубокое дыхание.</p><div class="read-more" id="rec-a33"></div></div></div>
-  <div id="page-a34" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Польза ходьбы для похудения</h2><p>Ходьба — это кардио для суставов. Чтобы сжигать жир, нужно проходить 10 000 шагов в быстром темпе.</p><div class="read-more" id="rec-a34"></div></div></div>
-  <div id="page-a35" class="page-content"><a class="btn-back" onclick="showPage('articles-list')">← Назад</a><div class="card article-content"><h2>Почему строгие диеты не работают</h2><p>Организм испытывает стресс и замедляет метаболизм. Правильный путь — дефицит калорий в 15-20% и спорт.</p><div class="read-more" id="rec-a35"></div></div></div>
+  <div id="page-m1" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=150&h=150&fit=crop" alt="Арнольд"><h2>Арнольд Шварценеггер</h2><p>Актер, бодибилдер</p><blockquote>«Для меня жизнь — это не просто существование. Это постоянное движение вперед».</blockquote><p>Арнольд родился в Австрии в бедной семье. В 15 лет он начал заниматься бодибилдингом, и уже в 20 лет стал самым молодым «Мистером Вселенная».</p><div class="read-more" id="rec-m1"></div></div></div>
+  <div id="page-m2" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=150&h=150&fit=crop" alt="Тайсон"><h2>Майк Тайсон</h2><p>Боксер</p><blockquote>«Дисциплина — это делать то, что ты ненавидишь, но делать это так, как будто ты это любишь».</blockquote><p>Майк вырос в бедном районе Бруклина. Он был хулиганом, пока не встретил тренера Каса Д'Амато.</p><div class="read-more" id="rec-m2"></div></div></div>
+  <div id="page-m3" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1579952363873-27f3bade9f55?w=150&h=150&fit=crop" alt="Роналду"><h2>Криштиану Роналду</h2><p>Футболист</p><blockquote>«Я не хочу быть просто хорошим. Я хочу быть лучшим».</blockquote><p>Роналду вырос на острове Мадейра и в 12 лет уехал от семьи в Лиссабон.</p><div class="read-more" id="rec-m3"></div></div></div>
+  <div id="page-m4" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1555597673-b21d5c935865?w=150&h=150&fit=crop" alt="Брюс Ли"><h2>Брюс Ли</h2><p>Мастер боевых искусств</p><blockquote>«Не молитесь о легкой жизни. Молитесь о силах, чтобы выдержать трудную».</blockquote><p>Брюс Ли стал символом силы воли. Из-за травмы спины врачи сказали, что он больше не сможет заниматься.</p><div class="read-more" id="rec-m4"></div></div></div>
+  <div id="page-m5" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=150&h=150&fit=crop" alt="Гейтс"><h2>Билл Гейтс</h2><p>Основатель Microsoft</p><blockquote>«Успех — это плохой учитель».</blockquote><p>Гейтс бросил Гарвард, чтобы основать Microsoft. Его первая компания провалилась. Но он не сдался.</p><div class="read-more" id="rec-m5"></div></div></div>
+  <div id="page-m6" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1517976487492-5750f3195933?w=150&h=150&fit=crop" alt="Маск"><h2>Илон Маск</h2><p>Основатель SpaceX</p><blockquote>«Когда что-то кажется невозможным, это просто значит, что ты еще не нашел способ это сделать».</blockquote><p>В детстве Маск подвергался издевательствам. Когда он основал SpaceX, все говорили, что это невозможно.</p><div class="read-more" id="rec-m6"></div></div></div>
+  <div id="page-m7" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=150&h=150&fit=crop" alt="Джобс"><h2>Стив Джобс</h2><p>Основатель Apple</p><blockquote>«Ваше время ограничено, не тратьте его на то, чтобы жить чужой жизнью».</blockquote><p>Джобс основал Apple в гараже. В 30 лет его уволили из собственной компании.</p><div class="read-more" id="rec-m7"></div></div></div>
+  <div id="page-m8" class="page-content"><a class="btn-back" onclick="showPage('list')">← Назад</a><div class="card motivation-content"><img src="https://images.unsplash.com/photo-1549476464-37392f717541?w=150&h=150&fit=crop" alt="Али"><h2>Мохаммед Али</h2><p>Легенда бокса</p><blockquote>«Не считайте дни. Заставьте дни считаться».</blockquote><p>Али начал заниматься боксом в 12 лет после того, как у него украли велосипед.</p><div class="read-more" id="rec-m8"></div></div></div>
 
   <footer>&copy; 2026 FitCalc. Все права защищены.</footer>
 </div>
 
-<button onclick="scrollToTop()" id="scrollTopBtn" title="Наверх">↑</button>
-
 <script>
-const allArticles = [
-  { id: 'a1', title: 'Сколько шагов в день нужно проходить' }, { id: 'a2', title: 'Как ускорить метаболизм' },
-  { id: 'a3', title: 'Правильное питание для начинающих' }, { id: 'a4', title: 'Почему после еды хочется спать' },
-  { id: 'a5', title: 'Плюсы и минусы интервального голодания' }, { id: 'a6', title: 'Как тренироваться дома' },
-  { id: 'a7', title: 'Что есть до и после тренировки' }, { id: 'a8', title: 'Вред сидячего образа жизни' },
-  { id: 'a9', title: 'Головная боль: причины' }, { id: 'a10', title: 'Как побороть лень' },
-  { id: 'a11', title: 'Вся правда о протеиновых коктейлях' }, { id: 'a12', title: 'Как правильно спать' },
-  { id: 'a13', title: 'Растяжка: зачем она нужна' }, { id: 'a14', title: 'Что такое «углеводное окно»' },
-  { id: 'a15', title: 'Как сохранить мотивацию' }, { id: 'a16', title: 'Как быстро сжечь жир на животе' },
-  { id: 'a17', title: 'Польза и вред кардиотренировок' }, { id: 'a18', title: 'Как избавиться от боли в спине' },
-  { id: 'a19', title: 'Что такое креатин' }, { id: 'a20', title: 'Как выбрать спортзал' },
-  { id: 'a21', title: 'Можно ли тренироваться при простуде' }, { id: 'a22', title: 'Польза бани и сауны' },
-  { id: 'a23', title: 'Как считать пульс для сжигания жира' }, { id: 'a24', title: 'Всё о витамине D' },
-  { id: 'a25', title: 'Как отказаться от сахара' }, { id: 'a26', title: 'Чем полезна овсянка' },
-  { id: 'a27', title: 'Как накачать широкие плечи' }, { id: 'a28', title: 'Что будет, если пить газировку каждый день' },
-  { id: 'a29', title: 'Как избавиться от отеков по утрам' }, { id: 'a30', title: 'Как поддерживать форму без спортзала' },
-  { id: 'a31', title: 'Сколько часов нужно спать взрослому' }, { id: 'a32', title: 'Можно ли есть перед сном' },
-  { id: 'a33', title: 'Как быстро взбодриться без кофе' }, { id: 'a34', title: 'Польза ходьбы для похудения' },
-  { id: 'a35', title: 'Почему строгие диеты не работают' }
+const allMotivations = [
+  { id: 'm1', name: 'Арнольд Шварценеггер' }, { id: 'm2', name: 'Майк Тайсон' },
+  { id: 'm3', name: 'Криштиану Роналду' }, { id: 'm4', name: 'Брюс Ли' },
+  { id: 'm5', name: 'Билл Гейтс' }, { id: 'm6', name: 'Илон Маск' },
+  { id: 'm7', name: 'Стив Джобс' }, { id: 'm8', name: 'Мохаммед Али' }
 ];
 
 function generateRecommendations() {
-  allArticles.forEach((article, index) => {
+  allMotivations.forEach((item, index) => {
     let recs = [];
     for (let i = 1; i <= 3; i++) {
-      let nextIndex = (index + i) % allArticles.length;
-      recs.push(allArticles[nextIndex]);
+      let nextIndex = (index + i) % allMotivations.length;
+      recs.push(allMotivations[nextIndex]);
     }
-    const container = document.getElementById('rec-' + article.id);
+    const container = document.getElementById('rec-' + item.id);
     if(container) {
       let html = '<h3>Читайте также:</h3><ul>';
-      recs.forEach(rec => { html += `<li><a onclick="showPage('${rec.id}')">${rec.title}</a></li>`; });
+      recs.forEach(rec => { html += `<li><a onclick="showPage('${rec.id}')">${rec.name}</a></li>`; });
       html += '</ul>';
       container.innerHTML = html;
     }
@@ -231,7 +139,7 @@ function showPage(pageId) {
   document.querySelectorAll('.page-content').forEach(el => el.classList.remove('active-page'));
   document.getElementById('page-' + pageId).classList.add('active-page');
   const searchBox = document.getElementById('mainSearch');
-  if (pageId === 'articles-list') { searchBox.classList.remove('hidden'); } else { searchBox.classList.add('hidden'); }
+  if (pageId === 'list') { searchBox.classList.remove('hidden'); } else { searchBox.classList.add('hidden'); }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -241,7 +149,7 @@ function filterContent() {
   items.forEach(item => {
     const title = item.getAttribute('data-title') || '';
     const rootQuery = query.substring(0, Math.max(3, query.length - 1)); 
-    if (title.includes(rootQuery) || title.includes(query)) { item.style.display = 'block'; } 
+    if (title.includes(rootQuery) || title.includes(query)) { item.style.display = 'flex'; } 
     else { item.style.display = 'none'; }
   });
 }
@@ -259,17 +167,9 @@ function cycleTheme(btn) {
 
 if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
   document.body.classList.add('theme-dark');
-  document.getElementById('themeBtn').textContent = '🌙';
   currentTheme = 1;
+  document.querySelector('.theme-toggle').textContent = '🌙';
 }
-
-window.onscroll = function() {
-  const btn = document.getElementById("scrollTopBtn");
-  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) { btn.style.display = "block"; } 
-  else { btn.style.display = "none"; }
-};
-
-function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
 </script>
 </body>
 </html>
