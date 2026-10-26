@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>О сайте | FitCalc</title>
+<style>
+  :root { --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0; --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc; --text-color: #1e293b; --text-muted: #475569; --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8); --btn-bg: #2563eb; --btn-hover: #1d4ed8; --nav-bg: rgba(255, 255, 255, 0.95); }
+  body.theme-dark { --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b; --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827; --text-color: #f8fafc; --text-muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1); --btn-bg: #3b82f6; --btn-hover: #2563eb; --nav-bg: rgba(15, 23, 42, 0.95); }
+
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0 0 20px 0; color: var(--text-color); line-height: 1.6; background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4)); background-size: 400% 400%; animation: gradientBG 25s ease infinite; min-height: 100vh; }
+  @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+  .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; letter-spacing: -0.5px; }
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; }
+  .nav-links a:hover { background: var(--btn-bg); color: #fff; }
+  .theme-toggle { background: transparent; border: 1px solid var(--text-muted); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 16px; }
+  .theme-toggle:hover { background: var(--card-border); }
+
+  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; }
+  .search-input { width: 100%; max-width: 600px; padding: 10px 15px; border: 1px solid var(--card-border); border-radius: 20px; font-size: 15px; background: var(--card-bg); color: var(--text-color); }
+
+  .container { max-width: 800px; margin: 20px auto; padding: 0 20px; }
+  .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); margin-bottom: 24px; }
+  h1 { font-size: 28px; margin-top: 0; text-align: center; color: var(--btn-bg); }
+  p { margin-bottom: 15px; color: var(--text-muted); font-size: 16px; }
+  ul { color: var(--text-muted); margin-bottom: 15px; padding-left: 20px; }
+  li { margin-bottom: 8px; }
+
+  footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; }
+  
+  #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border: none; background-color: var(--btn-bg); color: white; cursor: pointer; padding: 15px; border-radius: 50%; font-size: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+  #scrollTopBtn:hover { background-color: var(--btn-hover); }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-logo" href="../index.html">FitCalc</a>
+  <div class="nav-links">
+    <a href="../calculators/index.html">Калькуляторы</a>
+    <a href="../articles/index.html">Статьи</a>
+    <a href="../motivation/index.html">Мотивация</a>
+    <a href="../about/index.html">О сайте</a>
+    <a href="../privacy/index.html">Политика</a>
+  </div>
+  <button class="theme-toggle" id="themeBtn" onclick="cycleTheme()">☀️</button>
+</nav>
+
+<div class="search-container">
+  <input type="text" class="search-input" placeholder="Поиск по сайту (в разработке)...">
+</div>
+
+<div class="container">
+  <div class="card">
+    <h1>О сайте FitCalc</h1>
+    <p>Добро пожаловать на <strong>FitCalc</strong> — ваш надежный помощник в мире здоровья, фитнеса и правильного питания!</p>
+    
+    <p>Наша миссия — сделать сложные медицинские и спортивные расчеты простыми и доступными для каждого. Мы верим, что забота о своем теле должна начинаться с точных данных, а не с догадок. В интернете слишком много противоречивой информации, и мы хотим стать тем островком надежности, где вы найдете проверенные формулы и понятные объяснения.</p>
+
+    <p><strong>Почему мы создали этот сайт?</strong></p>
+    <ul>
+      <li>Чтобы вы могли быстро рассчитать свою норму калорий, воды и БЖУ без сложных таблиц.</li>
+      <li>Чтобы читать полезные статьи о питании и тренировках, написанные простым языком.</li>
+      <li>Чтобы находить мотивацию в историях великих людей, которые доказали, что нет ничего невозможного.</li>
+    </ul>
+
+    <p>Все наши инструменты используют проверенные научные формулы (например, формулу Миффлина-Сан Жеора для расчета калорий), которые применяются профессиональными диетологами и тренерами по всему миру. Мы не храним ваши данные: все расчеты выполняются локально в вашем браузере.</p>
+
+    <p>Если у вас есть вопросы, предложения или вы нашли ошибку, пожалуйста, свяжитесь с нами по адресу: <strong>arseniy.polegaev@gmail.com</strong>. Мы всегда рады обратной связи и стараемся отвечать в кратчайшие сроки.</p>
+    
+    <p>Спасибо, что выбрали FitCalc. Будьте здоровы!</p>
+  </div>
+
+  <footer>&copy; 2026 FitCalc. Все права защищены.</footer>
+</div>
+
+<button onclick="scrollToTop()" id="scrollTopBtn" title="Наверх">↑</button>
+
+<script>
+// Тема
+let currentTheme = 0;
+const themes = ['', 'theme-dark'];
+const themeIcons = ['☀️', '🌑'];
+
+function cycleTheme() {
+  document.body.classList.remove(...themes);
+  currentTheme = (currentTheme + 1) % themes.length;
+  if(themes[currentTheme] !== '') { document.body.classList.add(themes[currentTheme]); }
+  document.getElementById('themeBtn').textContent = themeIcons[currentTheme];
+}
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.body.classList.add('theme-dark');
+  currentTheme = 1;
+  document.getElementById('themeBtn').textContent = '🌑';
+}
+
+// Кнопка наверх
+window.onscroll = function() {
+  const btn = document.getElementById("scrollTopBtn");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) {
+    btn.style.display = "block";
+  } else {
+    btn.style.display = "none";
+  }
+};
+
+function scrollToTop() {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+
+</body>
+</html>
