@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Калькуляторы | FitCalc</title>
+<style>
+  :root { --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0; --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc; --text-color: #1e293b; --text-muted: #475569; --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8); --input-bg: #ffffff; --input-border: #cbd5e1; --btn-bg: #2563eb; --btn-hover: #1d4ed8; --nav-bg: rgba(255, 255, 255, 0.95); }
+  body.theme-dark { --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b; --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827; --text-color: #f8fafc; --text-muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1); --input-bg: #0f172a; --input-border: #334155; --btn-bg: #3b82f6; --btn-hover: #2563eb; --nav-bg: rgba(15, 23, 42, 0.95); }
+
+  body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; padding: 0 0 20px 0; color: var(--text-color); line-height: 1.6; background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4)); background-size: 400% 400%; animation: gradientBG 25s ease infinite; min-height: 100vh; }
+  @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; flex-wrap: wrap; gap: 10px; }
+  .nav-logo { font-weight: 800; font-size: 22px; color: var(--btn-bg); text-decoration: none; letter-spacing: -0.5px; }
+  .nav-links { display: flex; gap: 10px; flex-wrap: wrap; }
+  .nav-links a { text-decoration: none; color: var(--text-color); font-weight: 600; font-size: 15px; padding: 8px 14px; border-radius: 8px; transition: all 0.3s ease; }
+  .nav-links a:hover, .nav-links a.active { background: var(--btn-bg); color: #fff; }
+  .theme-toggle { background: transparent; border: 1px solid var(--text-muted); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 16px; }
+  .theme-toggle:hover { background: var(--card-border); }
+
+  .search-container { padding: 10px 20px; background: var(--nav-bg); border-bottom: 1px solid var(--card-border); display: flex; justify-content: center; }
+  .search-input { width: 100%; max-width: 600px; padding: 10px 15px; border: 1px solid var(--card-border); border-radius: 20px; font-size: 15px; background: var(--input-bg); color: var(--text-color); }
+  .search-input:focus { outline: none; border-color: var(--btn-bg); }
+
+  .container { max-width: 800px; margin: 20px auto; padding: 0 20px; }
+  .card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 30px; box-shadow: 0 8px 32px rgba(0, 0, 0, 0.04); margin-bottom: 24px; }
+  h2 { font-size: 22px; margin-top: 0; border-bottom: 2px solid var(--card-border); padding-bottom: 12px; display: flex; gap: 10px; }
+  
+  label { display: block; margin: 16px 0 6px; font-weight: 600; font-size: 14px; color: var(--text-muted); }
+  input, select { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 8px; font-size: 16px; box-sizing: border-box; background: var(--input-bg); color: var(--text-color); }
+  input:focus, select:focus { outline: none; border-color: var(--btn-bg); box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+
+  .action-buttons { display: flex; gap: 10px; margin-top: 24px; }
+  button.btn-primary { flex: 2; padding: 14px; background: var(--btn-bg); color: #fff; border: none; border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+  button.btn-primary:hover { background: var(--btn-hover); transform: translateY(-2px); }
+  button.btn-primary:active { transform: scale(0.96); }
+  button.btn-secondary { flex: 1; padding: 14px; background: transparent; color: var(--text-muted); border: 1px solid var(--input-border); border-radius: 8px; font-size: 16px; font-weight: bold; cursor: pointer; transition: all 0.3s; }
+  button.btn-secondary:hover { background: var(--input-border); color: var(--text-color); }
+
+  .result { margin-top: 24px; padding: 20px; background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 12px; display: none; color: #1e293b; }
+  .result.water-result { background: #eff6ff; border-color: #bfdbfe; }
+  .result.macro-result { background: #fdf4ff; border-color: #fbcfe8; }
+  .result.fat-result { background: #fffbeb; border-color: #fde68a; }
+  .result.ideal-result { background: #f0fdfa; border-color: #99f6e4; }
+  .result p { margin: 8px 0; font-size: 16px; }
+  .value { font-weight: 800; color: #16a34a; }
+  .bmi-value { font-weight: 800; color: #2563eb; }
+  .water-value { font-weight: 800; color: #0284c7; }
+  .macro-value { font-weight: 800; color: #db2777; }
+  .fat-value { font-weight: 800; color: #d97706; }
+  .ideal-value { font-weight: 800; color: #0d9488; }
+
+  footer { text-align: center; padding: 20px 0; color: var(--text-muted); font-size: 14px; }
+  
+  #scrollTopBtn { display: none; position: fixed; bottom: 30px; right: 30px; z-index: 99; border: none; background-color: var(--btn-bg); color: white; cursor: pointer; padding: 15px; border-radius: 50%; font-size: 18px; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+  #scrollTopBtn:hover { background-color: var(--btn-hover); }
+
+  @media (max-width: 600px) {
+    .navbar { flex-direction: column; }
+    .nav-links { justify-content: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-logo" href="../index.html">FitCalc</a>
+  <div class="nav-links">
+    <a href="../calculators/index.html" class="active">Калькуляторы</a>
+    <a href="../articles/index.html">Статьи</a>
+    <a href="../motivation/index.html">Мотивация</a>
+    <a href="../about/index.html">О сайте</a>
+    <a href="../privacy/index.html">Политика</a>
+  </div>
+  <button class="theme-toggle" id="themeBtn" onclick="cycleTheme()">☀️</button>
+</nav>
+
+<div class="search-container">
+  <input type="text" id="searchInput" class="search-input" placeholder="Поиск по калькуляторам..." oninput="filterContent()">
+</div>
+
+<div class="container">
+  
+  <div class="card searchable-item" data-title="калькулятор калорий имт">
+    <h2>🔥 Калькулятор калорий и ИМТ</h2>
+    <label>Пол</label><select id="sex"><option value="male">Мужчина</option><option value="female">Женщина</option></select>
+    <label>Возраст (лет)</label><input type="number" id="age" placeholder="25">
+    <label>Вес (кг)</label><input type="number" id="weight" placeholder="70">
+    <label>Рост (см)</label><input type="number" id="height" placeholder="175">
+    <label>Активность</label><select id="activity"><option value="1.2">Сидячий</option><option value="1.375">Легкая</option><option value="1.55">Средняя</option><option value="1.725">Высокая</option></select>
+    <div class="action-buttons"><button class="btn-primary" onclick="calcCal()">Рассчитать</button><button class="btn-secondary" onclick="resetCal()">Сброс</button></div>
+    <div class="result" id="res-cal"><p>Калории: <span class="value" id="cal-val"></span></p><p>ИМТ: <span class="bmi-value" id="bmi-val"></span></p><p>Категория: <span class="bmi-value" id="bmi-cat"></span></p></div>
+  </div>
+
+  <div class="card searchable-item" data-title="калькулятор воды">
+    <h2>💧 Калькулятор воды</h2>
+    <label>Вес (кг)</label><input type="number" id="w-weight" placeholder="70">
+    <label>Активность</label><select id="w-act"><option value="0">Минимальная</option><option value="0.5">Умеренная</option><option value="1">Высокая</option></select>
+    <div class="action-buttons"><button class="btn-primary" onclick="calcWater()">Рассчитать</button><button class="btn-secondary" onclick="resetWater()">Сброс</button></div>
+    <div class="result water-result" id="res-water"><p>Норма воды: <span class="water-value" id="water-val"></span> л</p></div>
+  </div>
+
+  <div class="card searchable-item" data-title="калькулятор бжу">
+    <h2>🥩 Калькулятор БЖУ</h2>
+    <label>Вес (кг)</label><input type="number" id="m-weight" placeholder="70">
+    <label>Цель</label><select id="m-goal"><option value="loss">Похудение</option><option value="maintain" selected>Поддержание</option><option value="gain">Набор</option></select>
+    <div class="action-buttons"><button class="btn-primary" onclick="calcMacro()">Рассчитать</button><button class="btn-secondary" onclick="resetMacro()">Сброс</button></div>
+    <div class="result macro-result" id="res-macro"><p>Белки: <span class="macro-value" id="p-val"></span> г</p><p>Жиры: <span class="macro-value" id="f-val"></span> г</p><p>Углеводы: <span class="macro-value" id="c-val"></span> г</p></div>
+  </div>
+
+  <div class="card searchable-item" data-title="идеальный вес">
+    <h2>⚖️ Идеальный вес</h2>
+    <label>Рост (см)</label><input type="number" id="i-height" placeholder="175">
+    <div class="action-buttons"><button class="btn-primary" onclick="calcIdeal()">Рассчитать</button><button class="btn-secondary" onclick="resetIdeal()">Сброс</button></div>
+    <div class="result ideal-result" id="res-ideal"><p>Идеальный вес: <span class="ideal-value" id="ideal-val"></span> кг</p></div>
+  </div>
+
+  <div class="card searchable-item" data-title="процент жира">
+    <h2>🧍 Процент жира</h2>
+    <label>Пол</label><select id="f-sex"><option value="male">Мужчина</option><option value="female">Женщина</option></select>
+    <label>Рост (см)</label><input type="number" id="f-height" placeholder="175">
+    <label>Шея (см)</label><input type="number" id="f-neck" placeholder="38">
+    <label>Талия (см)</label><input type="number" id="f-waist" placeholder="85">
+    <div id="hip-container" style="display:none;"><label>Бедра (см)</label><input type="number" id="f-hip" placeholder="95"></div>
+    <div class="action-buttons"><button class="btn-primary" onclick="calcFat()">Рассчитать</button><button class="btn-secondary" onclick="resetFat()">Сброс</button></div>
+    <div class="result fat-result" id="res-fat"><p>Процент жира: <span class="fat-value" id="fat-val"></span>%</p></div>
+  </div>
+
+  <footer>&copy; 2026 FitCalc. Все права защищены.</footer>
+</div>
+
+<button onclick="scrollToTop()" id="scrollTopBtn" title="Наверх">↑</button>
+
+<script>
+// Логика поиска
+function filterContent() {
+  const query = document.getElementById('searchInput').value.toLowerCase().trim();
+  const items = document.querySelectorAll('.searchable-item');
+  items.forEach(item => {
+    const title = item.getAttribute('data-title') || '';
+    if (title.includes(query)) { item.style.display = 'block'; } else { item.style.display = 'none'; }
+  });
+}
+
+// Калькуляторы
+function calcCal() {
+  const sex = document.getElementById('sex').value;
+  const age = parseFloat(document.getElementById('age').value);
+  const weight = parseFloat(document.getElementById('weight').value);
+  const height = parseFloat(document.getElementById('height').value);
+  const act = parseFloat(document.getElementById('activity').value);
+  if (!age || !weight || !height || age <= 0 || weight <= 0 || height <= 0) { alert('Введите корректные данные.'); return; }
+  let bmr = (sex === 'male') ? (10 * weight + 6.25 * height - 5 * age + 5) : (10 * weight + 6.25 * height - 5 * age - 161);
+  const cal = Math.round(bmr * act);
+  const bmi = weight / Math.pow(height / 100, 2);
+  let cat = bmi < 18.5 ? 'Недостаточный вес' : bmi < 25 ? 'Норма' : bmi < 30 ? 'Избыточный вес' : 'Ожирение';
+  document.getElementById('cal-val').textContent = cal;
+  document.getElementById('bmi-val').textContent = bmi.toFixed(1);
+  document.getElementById('bmi-cat').textContent = cat;
+  document.getElementById('res-cal').style.display = 'block';
+}
+function calcWater() {
+  const w = parseFloat(document.getElementById('w-weight').value);
+  const a = parseFloat(document.getElementById('w-act').value);
+  if (!w || w <= 0) { alert('Введите корректный вес.'); return; }
+  document.getElementById('water-val').textContent = ((w * 0.03) + a).toFixed(1);
+  document.getElementById('res-water').style.display = 'block';
+}
+function calcMacro() {
+  const w = parseFloat(document.getElementById('m-weight').value);
+  const g = document.getElementById('m-goal').value;
+  if (!w || w <= 0) { alert('Введите корректный вес.'); return; }
+  let p, f, c;
+  if (g === 'loss') { p = w * 2.0; f = w * 0.8; c = w * 2.0; }
+  else if (g === 'gain') { p = w * 2.0; f = w * 1.0; c = w * 4.0; }
+  else { p = w * 1.6; f = w * 1.0; c = w * 3.0; }
+  document.getElementById('p-val').textContent = Math.round(p);
+  document.getElementById('f-val').textContent = Math.round(f);
+  document.getElementById('c-val').textContent = Math.round(c);
+  document.getElementById('res-macro').style.display = 'block';
+}
+function calcIdeal() {
+  const h = parseFloat(document.getElementById('i-height').value);
+  if (!h || h <= 0) { alert('Введите корректный рост.'); return; }
+  let ideal = h - 100; if (h > 165) ideal = h - 105; if (h > 175) ideal = h - 110;
+  document.getElementById('ideal-val').textContent = Math.round(ideal);
+  document.getElementById('res-ideal').style.display = 'block';
+}
+function calcFat() {
+  const sex = document.getElementById('f-sex').value;
+  const height = parseFloat(document.getElementById('f-height').value);
+  const neck = parseFloat(document.getElementById('f-neck').value);
+  const waist = parseFloat(document.getElementById('f-waist').value);
+  const hip = parseFloat(document.getElementById('f-hip').value);
+  if (!height || !neck || !waist || (sex === 'female' && !hip)) { alert('Заполните все поля.'); return; }
+  let fat;
+  if (sex === 'male') { fat = 495 / (1.0324 - 0.19077 * Math.log10(waist - neck) + 0.15456 * Math.log10(height)) - 450; }
+  else { fat = 495 / (1.29579 - 0.35004 * Math.log10(waist + hip - neck) + 0.22100 * Math.log10(height)) - 450; }
+  if (fat < 0) fat = 0;
+  document.getElementById('fat-val').textContent = fat.toFixed(1);
+  document.getElementById('res-fat').style.display = 'block';
+}
+
+function resetCal() { document.getElementById('age').value = ''; document.getElementById('weight').value = ''; document.getElementById('height').value = ''; document.getElementById('res-cal').style.display = 'none'; }
+function resetWater() { document.getElementById('w-weight').value = ''; document.getElementById('res-water').style.display = 'none'; }
+function resetMacro() { document.getElementById('m-weight').value = ''; document.getElementById('res-macro').style.display = 'none'; }
+function resetIdeal() { document.getElementById('i-height').value = ''; document.getElementById('res-ideal').style.display = 'none'; }
+function resetFat() { document.getElementById('f-height').value = ''; document.getElementById('f-neck').value = ''; document.getElementById('f-waist').value = ''; document.getElementById('f-hip').value = ''; document.getElementById('res-fat').style.display = 'none'; }
+
+document.getElementById('f-sex').addEventListener('change', function() {
+  document.getElementById('hip-container').style.display = this.value === 'female' ? 'block' : 'none';
+});
+
+// Темы
+let currentTheme = 0;
+const themes = ['', 'theme-dark'];
+const themeIcons = ['☀️', '🌑'];
+function cycleTheme() {
+  document.body.classList.remove(...themes);
+  currentTheme = (currentTheme + 1) % themes.length;
+  if(themes[currentTheme] !== '') { document.body.classList.add(themes[currentTheme]); }
+  document.getElementById('themeBtn').textContent = themeIcons[currentTheme];
+}
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.body.classList.add('theme-dark'); currentTheme = 1; document.getElementById('themeBtn').textContent = '🌑';
+}
+
+// Кнопка наверх
+window.onscroll = function() {
+  const btn = document.getElementById("scrollTopBtn");
+  if (document.body.scrollTop > 200 || document.documentElement.scrollTop > 200) { btn.style.display = "block"; } else { btn.style.display = "none"; }
+};
+function scrollToTop() { window.scrollTo({ top: 0, behavior: 'smooth' }); }
+</script>
+
+</body>
+</html>
