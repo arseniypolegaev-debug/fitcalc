@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FitCalc | Твой путь к здоровью</title>
+<meta name="description" content="Бесплатные калькуляторы, полезные статьи и мотивация для здоровья и спорта.">
+<style>
+  :root {
+    --bg-gradient-1: #f0f4f8; --bg-gradient-2: #e2e8f0; --bg-gradient-3: #dbeafe; --bg-gradient-4: #f8fafc;
+    --text-color: #1e293b; --text-muted: #475569; --card-bg: rgba(255, 255, 255, 0.9); --card-border: rgba(255, 255, 255, 0.8);
+    --btn-bg: #2563eb; --btn-hover: #1d4ed8; --nav-bg: rgba(255, 255, 255, 0.95);
+  }
+
+  body.theme-dark {
+    --bg-gradient-1: #0f172a; --bg-gradient-2: #1e293b; --bg-gradient-3: #1e1b4b; --bg-gradient-4: #111827;
+    --text-color: #f8fafc; --text-muted: #94a3b8; --card-bg: rgba(30, 41, 59, 0.85); --card-border: rgba(255, 255, 255, 0.1);
+    --btn-bg: #3b82f6; --btn-hover: #2563eb; --nav-bg: rgba(15, 23, 42, 0.95);
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 20px; color: var(--text-color);
+    background: linear-gradient(-45deg, var(--bg-gradient-1), var(--bg-gradient-2), var(--bg-gradient-3), var(--bg-gradient-4));
+    background-size: 400% 400%; animation: gradientBG 25s ease infinite; min-height: 100vh;
+  }
+  @keyframes gradientBG { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
+
+  .navbar { background: var(--nav-bg); backdrop-filter: blur(10px); border-radius: 16px; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+  .nav-logo { font-weight: 800; font-size: 24px; color: var(--btn-bg); text-decoration: none; letter-spacing: -1px; }
+  .theme-toggle { background: transparent; border: 1px solid var(--text-muted); color: var(--text-color); padding: 8px 14px; border-radius: 20px; cursor: pointer; font-size: 16px; transition: all 0.3s; }
+  .theme-toggle:hover { background: var(--card-border); }
+
+  .hero { text-align: center; max-width: 800px; margin: 0 auto 50px; }
+  .hero h1 { font-size: 42px; margin-bottom: 15px; color: var(--text-color); }
+  .hero p { font-size: 18px; color: var(--text-muted); }
+
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; max-width: 1000px; margin: 0 auto; }
+  
+  .card { background: var(--card-bg); backdrop-filter: blur(10px); border: 1px solid var(--card-border); border-radius: 20px; padding: 30px; text-align: center; text-decoration: none; color: var(--text-color); transition: all 0.3s ease; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 8px 32px rgba(0,0,0,0.04); }
+  .card:hover { transform: translateY(-5px); border-color: var(--btn-bg); box-shadow: 0 12px 40px rgba(37, 99, 235, 0.15); }
+  .card-icon { font-size: 48px; margin-bottom: 15px; }
+  .card h2 { font-size: 22px; margin: 0 0 10px 0; }
+  .card p { font-size: 15px; color: var(--text-muted); margin: 0; }
+
+  footer { text-align: center; margin-top: 60px; color: var(--text-muted); font-size: 14px; }
+
+  @media (max-width: 600px) {
+    .hero h1 { font-size: 28px; }
+    .navbar { flex-direction: column; gap: 10px; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="navbar">
+  <a class="nav-logo" href="index.html">FitCalc</a>
+  <button class="theme-toggle" id="themeBtn" onclick="cycleTheme()">☀️</button>
+</nav>
+
+<div class="hero">
+  <h1>Твой путь к идеальному телу</h1>
+  <p>Точные расчеты, полезные статьи и мощная мотивация. Всё бесплатно и без регистрации.</p>
+</div>
+
+<div class="grid">
+  <a href="calculators/index.html" class="card">
+    <div class="card-icon">🧮</div>
+    <h2>Калькуляторы</h2>
+    <p>Калории, БЖУ, норма воды и идеальный вес</p>
+  </a>
+  
+  <a href="articles/index.html" class="card">
+    <div class="card-icon">📚</div>
+    <h2>Статьи</h2>
+    <p>Питание, тренировки и здоровье простыми словами</p>
+  </a>
+
+  <a href="motivation/index.html" class="card">
+    <div class="card-icon">🔥</div>
+    <h2>Мотивация</h2>
+    <p>Истории великих людей, которые изменят твой взгляд</p>
+  </a>
+
+  <a href="about/index.html" class="card">
+    <div class="card-icon">ℹ️</div>
+    <h2>О сайте</h2>
+    <p>Кто мы и зачем создали этот проект</p>
+  </a>
+
+  <a href="privacy/index.html" class="card">
+    <div class="card-icon">🔒</div>
+    <h2>Политика</h2>
+    <p>Конфиденциальность и правила использования</p>
+  </a>
+</div>
+
+<footer>
+  &copy; 2026 FitCalc. Все права защищены.
+</footer>
+
+<script>
+let currentTheme = 0;
+const themes = ['', 'theme-dark'];
+const themeIcons = ['☀️', '🌑'];
+
+function cycleTheme() {
+  document.body.classList.remove(...themes);
+  currentTheme = (currentTheme + 1) % themes.length;
+  if(themes[currentTheme] !== '') { document.body.classList.add(themes[currentTheme]); }
+  document.getElementById('themeBtn').textContent = themeIcons[currentTheme];
+}
+
+if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+  document.body.classList.add('theme-dark');
+  currentTheme = 1;
+  document.getElementById('themeBtn').textContent = '🌑';
+}
+</script>
+
+</body>
+</html>
